@@ -48,7 +48,7 @@ jobs:
       - name: create package directory amd64
         run: |
           mkdir -p .debpkg/usr/bin
-          cp ./dist/linux/x86_64/bn .debpkg/usr/bin/bncli
+          cp ./dist/linux/x86_64/bn .debpkg/usr/bin/bn-cli
           ls -l .debpkg/usr/bin/bn-cli
           chmod 755 .debpkg/usr/bin/bn-cli
       - uses: jiro4989/build-deb-action@v2
