@@ -49,8 +49,8 @@ jobs:
         run: |
           mkdir -p .debpkg/usr/bin
           cp ./dist/linux/x86_64/bn .debpkg/usr/bin/bncli
-          ls -l .debpkg/usr/bin/bncli
-          chmod 755 .debpkg/usr/bin/bncli
+          ls -l .debpkg/usr/bin/bn-cli
+          chmod 755 .debpkg/usr/bin/bn-cli
       - uses: jiro4989/build-deb-action@v2
         with:
           package: bn-cli
