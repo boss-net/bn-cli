@@ -7,12 +7,12 @@
 # For more information see: https://github.com/denoland/setup-deno
 
 name: Deno
-
 on:
- pull:
-  branches:
-      - 'main'
-      - 'releases/**'
+ push:
+    branches: [ "main" ]
+ pull_request:
+    # The branches below must be a subset of the branches above
+    branches: [ "main" ]
  
 
 jobs:
