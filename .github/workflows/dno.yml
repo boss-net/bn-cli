@@ -48,12 +48,12 @@ jobs:
       - name: create package directory amd64
         run: |
           mkdir -p .debpkg/usr/bin
-          cp ./dist/linux/x86_64/bn .debpkg/usr/bin/bn-cli
-          ls -l .debpkg/usr/bin/bn-cli
-          chmod 755 .debpkg/usr/bin/bn-cli
+          cp ./dist/linux/x86_64/bn .debpkg/usr/bin/bncli
+          ls -l .debpkg/usr/bin/bncli
+          chmod 755 .debpkg/usr/bin/bncli
       - uses: jiro4989/build-deb-action@v2
         with:
-          package: bn-cli
+          package: bncli
           package_root: .debpkg
           maintainer: boss-net
           version: ${{ github.ref }} # refs/tags/v*.*.*
