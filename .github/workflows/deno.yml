@@ -9,7 +9,8 @@
 name: Deno
 
 on:
- push
+ workflow_dispatch:
+ 
 
 jobs:
   build_release:
