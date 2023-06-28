@@ -9,7 +9,7 @@
 name: Deno
 
 on:
- push:
+ pull:
   branches:
       - 'main'
       - 'releases/**'
