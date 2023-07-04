@@ -73645,9 +73645,9 @@ class AwsTagSyncDeployer extends AwsBaseDeployer {
         };
     }
     async downloadRelease() {
-        await downloadFile("https://github.com/Bossnet-Labs/bn-aws-tag-sync/releases/latest/download/CloudFormation.yaml", "CloudFormation.yaml");
-        await downloadFile("https://github.com/Bossnet-Labs/bn-aws-tag-sync/releases/latest/download/TgAwsTagWatchLambda.zip", "TgAwsTagWatchLambda.zip");
-        Log.info("Release downloaded from https://github.com/Bossnet-Labs/bn-aws-tag-sync/releases/latest/download");
+        await downloadFile("https://github.com/boss-net/bn-aws-tag-sync/releases/latest/download/CloudFormation.yaml", "CloudFormation.yaml");
+        await downloadFile("https://github.com/boss-net/bn-aws-tag-sync/releases/latest/download/TgAwsTagWatchLambda.zip", "TgAwsTagWatchLambda.zip");
+        Log.info("Release downloaded from https://github.com/boss-net/bn-aws-tag-sync/releases/latest/download");
     }
     async uploadToS3Bucket(bucket, region) {
         const cmd = this.getAwsS3Command("put-object");

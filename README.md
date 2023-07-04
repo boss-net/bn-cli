@@ -5,7 +5,7 @@ This is a command line application demonstrating various usages of the Bossnet A
 
 Setup
 ===========================
-* Download the lastest [release](https://github.com/Bossnet-Labs/bn-cli/releases/latest) cli-{version}-{os}-{cpu architecture}.zip 
+* Download the lastest [release](https://github.com/boss-net/bn-cli/releases/latest) cli-{version}-{os}-{cpu architecture}.zip 
 * Unzip the downloaded zip file
 
 
@@ -74,4 +74,4 @@ Example Commands
 
 Need Help?
 ===========================
-If you are experiencing any issues, create a new issue [here](https://github.com/Bossnet-Labs/bn-cli/issues/new).
+If you are experiencing any issues, create a new issue [here](https://github.com/boss-net/bn-cli/issues/new).
