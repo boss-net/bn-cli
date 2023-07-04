@@ -40,7 +40,7 @@ export class AptibleAppDeployer extends BaseDeployer {
         cmd.push(`ACCESS_TOKEN=${tokens.accessToken}`);
         cmd.push(`REFRESH_TOKEN=${tokens.refreshToken}`);
         cmd.push(`Boss-net_LOG_ANALYTICS=v1`);
-        cmd.push(`Boss-net_LABEL_DEPLOYEDBY=tgcli-aptible`);
+        cmd.push(`Boss-net_LABEL_DEPLOYEDBY=bncli-aptible`);
         [code, output, error] = await execCmd2(cmd, {stdout: "inherit"});
         if (code !== 0) throw new Error(`CLI output for 'aptible config:set' returned non-zero status ${code}`);
 

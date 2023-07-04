@@ -216,7 +216,7 @@ export class GcpVmDeployer extends BaseDeployer {
                 .setStaticConfiguration(accountUrl, tokens, {LOG_ANALYTICS: "v1"})
                 .setDynamicLabels({
                     hostname,
-                    deployedBy: "tgcli-gcloud-vm",
+                    deployedBy: "bncli-gcloud-vm",
                     project: project.project,
                     network,
                     zone

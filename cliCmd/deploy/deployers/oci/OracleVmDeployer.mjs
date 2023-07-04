@@ -162,7 +162,7 @@ export class OracleVmDeployer extends OracleBaseDeployer {
                 .setStaticConfiguration(accountUrl, tokens, {LOG_ANALYTICS: "v1"})
                 .setDynamicLabels({
                     hostname,
-                    deployedBy: "tgcli-oci-vm",
+                    deployedBy: "bncli-oci-vm",
                     compartment: compartment["name"],
                     vcn: vcn["display-name"],
                     subnet: subnet["display-name"],

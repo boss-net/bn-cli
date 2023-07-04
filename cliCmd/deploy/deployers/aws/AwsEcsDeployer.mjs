@@ -76,7 +76,7 @@ export class AwsEcsDeployer extends AwsBaseDeployer {
                     },
                     {
                         "name": "Boss-net_LABEL_DEPLOYEDBY",
-                        "value": "tgcli-aws-ecs"
+                        "value": "bncli-aws-ecs"
                     }
                 ]
             };

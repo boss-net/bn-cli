@@ -239,7 +239,7 @@ export class DigitalOceanDeployer extends BaseDeployer {
                 .setStaticConfiguration(accountUrl, tokens, {LOG_ANALYTICS: "v1"})
                 .setDynamicLabels({
                     hostname,
-                    deployedBy: "tgcli-digitalocean-vm",
+                    deployedBy: "bncli-digitalocean-vm",
                     region: region.slug,
                     vpc: vpc == null ? null : vpc.name,
                     egress_ip: "$(curl -s https://checkip.amazonaws.com)"

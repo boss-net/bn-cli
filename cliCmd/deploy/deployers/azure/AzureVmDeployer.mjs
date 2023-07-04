@@ -125,7 +125,7 @@ export class AzureVmDeployer extends AzureBaseDeployer {
                 .setStaticConfiguration(accountUrl, tokens, {LOG_ANALYTICS: "v1"})
                 .setDynamicLabels({
                     hostname,
-                    deployedBy: "tgcli-az-vm",
+                    deployedBy: "bncli-az-vm",
                     location,
                     resourceGroup: resourceGroup.name,
                     vnet: vnet.name,

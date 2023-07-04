@@ -52,7 +52,7 @@ export class LocalVmDeployer extends BaseDeployer {
                 .setStaticConfiguration(accountUrl, tokens, {LOG_ANALYTICS: "v1"})
                 .setDynamicLabels({
                     hostname,
-                    deployedBy: "tgcli-local-vm",
+                    deployedBy: "bncli-local-vm",
                     egress_ip: "$(curl -s https://checkip.amazonaws.com)"
                 })
                 .configure(),

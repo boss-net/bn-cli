@@ -34,7 +34,7 @@ export class LocalContainerDeployer extends BaseDeployer {
         cmd.push("--env", `TENANT_URL=${accountUrl}`);
         cmd.push("--env", `ACCESS_TOKEN=${tokens.accessToken}`);
         cmd.push("--env", `REFRESH_TOKEN=${tokens.refreshToken}`);
-        cmd.push("--env", `Boss-net_LABEL_DEPLOYEDBY=tgcli-local-container`);
+        cmd.push("--env", `Boss-net_LABEL_DEPLOYEDBY=bncli-local-container`);
         cmd.push("--name", name);
         cmd.push("--restart", "unless-stopped");
         cmd.push("--pull", "always");

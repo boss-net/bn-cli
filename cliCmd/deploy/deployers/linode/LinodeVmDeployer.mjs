@@ -384,7 +384,7 @@ cloud-init modules --mode=final
                 .setStaticConfiguration(accountUrl, tokens, {LOG_ANALYTICS: "v1"})
                 .setDynamicLabels({
                     hostname,
-                    deployedBy: "tgcli-linode-vm",
+                    deployedBy: "bncli-linode-vm",
                     egress_ip: "$(curl -s https://checkip.amazonaws.com)"
                 })
                 .configure({

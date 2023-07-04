@@ -130,7 +130,7 @@ export class AwsEc2Deployer extends AwsBaseDeployer {
             echo Boss-net_LOG_ANALYTICS=${logAnalytics}
             echo Boss-net_LABEL_HOSTNAME=$HOSTNAME_LOOKUP
             echo Boss-net_LABEL_EGRESSIP=$EGRESS_IP
-            echo Boss-net_LABEL_DEPLOYEDBY=tgcli-aws-ec2
+            echo Boss-net_LABEL_DEPLOYEDBY=bncli-aws-ec2
             } > /etc/Boss-net/connector.conf
             sudo systemctl enable --now Boss-net-connector
         `.replace(/^            /gm, "");

@@ -330,7 +330,7 @@ export class HCloudDeployer extends BaseDeployer {
                 .setStaticConfiguration(accountUrl, tokens, {LOG_ANALYTICS: "v1"})
                 .setDynamicLabels({
                     hostname,
-                    deployedBy: "tgcli-hetzner-vm",
+                    deployedBy: "bncli-hetzner-vm",
                     datacenter: dataCenter.name,
                     location: dataCenter.location.name,
                     zone: dataCenter.network_zone,

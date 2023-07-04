@@ -48,12 +48,12 @@ jobs:
       - name: create package directory amd64
         run: |
           mkdir -p .debpkg/usr/bin
-          cp ./dist/linux/x86_64/tg .debpkg/usr/bin/tgcli
-          ls -l .debpkg/usr/bin/tgcli
-          chmod 755 .debpkg/usr/bin/tgcli
+          cp ./dist/linux/x86_64/tg .debpkg/usr/bin/bncli
+          ls -l .debpkg/usr/bin/bncli
+          chmod 755 .debpkg/usr/bin/bncli
       - uses: jiro4989/build-deb-action@v2
         with:
-          package: tgcli
+          package: bncli
           package_root: .debpkg
           maintainer: Boss-net_lab
           version: ${{ github.ref }} # refs/tags/v*.*.*
@@ -132,13 +132,13 @@ jobs:
           asset_name: cli_macos_aarch64.zip
           asset_content_type: application/zip
 
-      - name: Upload tgcli_debian
+      - name: Upload bncli_debian
         uses: actions/upload-release-asset@v1.0.2
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:
           upload_url: ${{ steps.get_release.outputs.upload_url }}
-          asset_path: tgcli_${{ steps.get_version.outputs.version-without-v }}_amd64.deb
-          asset_name: tgcli_${{ steps.get_version.outputs.version-without-v }}_amd64.deb
+          asset_path: bncli_${{ steps.get_version.outputs.version-without-v }}_amd64.deb
+          asset_name: bncli_${{ steps.get_version.outputs.version-without-v }}_amd64.deb
           asset_content_type: application/vnd.debian.binary-package
 

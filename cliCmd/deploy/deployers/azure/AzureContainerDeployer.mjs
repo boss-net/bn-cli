@@ -20,14 +20,14 @@ export class AzureContainerDeployer extends AzureBaseDeployer {
         cmd.push("--cpu", options.cpu)
         cmd.push("--memory", options.memory)
 
-        // let envString =`TENANT_URL=${accountUrl} ACCESS_TOKEN=${tokens.accessToken} REFRESH_TOKEN=${tokens.refreshToken} Boss-net_TIMESTAMP_FORMAT=2 Boss-net_LABEL_DEPLOYEDBY=tgcli-az-acs`;
+        // let envString =`TENANT_URL=${accountUrl} ACCESS_TOKEN=${tokens.accessToken} REFRESH_TOKEN=${tokens.refreshToken} Boss-net_TIMESTAMP_FORMAT=2 Boss-net_LABEL_DEPLOYEDBY=bncli-az-acs`;
         // cmd.push("--environment-variables", envString);
         cmd.push("--environment-variables")
         cmd.push(`TENANT_URL=${accountUrl}`)
         cmd.push(`ACCESS_TOKEN=${tokens.accessToken}`)
         cmd.push(`REFRESH_TOKEN=${tokens.refreshToken}`)
         cmd.push(`Boss-net_TIMESTAMP_FORMAT=2`)
-        cmd.push(`Boss-net_LABEL_DEPLOYEDBY=tgcli-az-acs`)
+        cmd.push(`Boss-net_LABEL_DEPLOYEDBY=bncli-az-acs`)
 
 
         const output = await execCmd(cmd);

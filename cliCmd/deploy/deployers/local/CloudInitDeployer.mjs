@@ -26,7 +26,7 @@ export class CloudInitDeployer extends BaseDeployer {
                 .setStaticConfiguration(accountUrl, tokens, {LOG_ANALYTICS: "v1"})
                 .setDynamicLabels({
                     hostname,
-                    deployedBy: options.deployedBy || "tgcli-cloudconfig",
+                    deployedBy: options.deployedBy || "bncli-cloudconfig",
                     egress_ip: "$(curl -s https://checkip.amazonaws.com)"
                 })
                 .configure(),
