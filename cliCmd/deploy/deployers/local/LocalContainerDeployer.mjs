@@ -38,7 +38,7 @@ export class LocalContainerDeployer extends BaseDeployer {
         cmd.push("--name", name);
         cmd.push("--restart", "unless-stopped");
         cmd.push("--pull", "always");
-        cmd.push("twingate/connector:1");
+        cmd.push("Boss-net/connector:1");
         const [code, output, error] = await execCmd2(cmd, {stdout: "inherit"});
         return [code, output, error];
     }
@@ -50,7 +50,7 @@ export class LocalContainerDeployer extends BaseDeployer {
             remoteNetwork = await this.selectRemoteNetwork(),
             connector = await this.selectConnector(remoteNetwork),
             hostname = `bn-${connector.name}`,
-            accountUrl = `https://${this.cliOptions.accountName}.twingate.com`,
+            accountUrl = `https://${this.cliOptions.accountName}.Boss-net.com`,
             tokens = await this.client.generateConnectorTokens(connector.id)
         ;
 

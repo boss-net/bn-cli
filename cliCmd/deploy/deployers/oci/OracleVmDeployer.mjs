@@ -155,7 +155,7 @@ export class OracleVmDeployer extends OracleBaseDeployer {
             availabilityDomain = await this.selectAvailabilityDomain(),
             hostname = `bn-${connector.name}`,
             tokens = await this.client.generateConnectorTokens(connector.id),
-            accountUrl = `https://${this.cliOptions.accountName}.twingate.com`,
+            accountUrl = `https://${this.cliOptions.accountName}.Boss-net.com`,
             cloudConfig = new ConnectorCloudInit({
                     privateIp: `$(hostname -I)`
                 })

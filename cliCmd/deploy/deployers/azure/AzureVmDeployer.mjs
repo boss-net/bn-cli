@@ -20,7 +20,7 @@ export class AzureVmDeployer extends AzureBaseDeployer {
         const cmd = this.getAzureCommand("sshkey", "create");
         cmd.push("-n", keyName);
         cmd.push("-g", resourceGroupName);
-            cmd.push("--tags", "Service=twingate-connector");
+            cmd.push("--tags", "Service=Boss-net-connector");
         const [code, output, errors] = await execCmd2(cmd, {stdErrToArray: true});
         if ( code !== 0 ) {
             errors.forEach(Log.error);
@@ -86,7 +86,7 @@ export class AzureVmDeployer extends AzureBaseDeployer {
             cmd.push("--ssh-key-name", keyName);
         }
         cmd.push("--subnet", subnetName);
-        cmd.push("--tags", "Service=twingate-connector");
+        cmd.push("--tags", "Service=Boss-net-connector");
         if ( assignPublicIp === false ) {
             cmd.push("--public-ip-address", "");
         }
@@ -97,7 +97,7 @@ export class AzureVmDeployer extends AzureBaseDeployer {
         cmd.push("--os-disk-delete-option", "Delete");
         //cmd.push("--ephemeral-os-disk");
         //cmd.push("--ephemeral-os-disk-placement", "CacheDisk");
-        cmd.push("--nsg", "twingate-connectorNSG");
+        cmd.push("--nsg", "Boss-net-connectorNSG");
         cmd.push("--nsg-rule", "NONE");
 
         const output = await execCmd(cmd);
@@ -120,7 +120,7 @@ export class AzureVmDeployer extends AzureBaseDeployer {
             size = options.size || "Standard_B1ms",
             hostname = `bn-${connector.name}`,
             tokens = await this.client.generateConnectorTokens(connector.id),
-            accountUrl = `https://${this.cliOptions.accountName}.twingate.com`,
+            accountUrl = `https://${this.cliOptions.accountName}.Boss-net.com`,
             cloudConfig = new ConnectorCloudInit()
                 .setStaticConfiguration(accountUrl, tokens, {LOG_ANALYTICS: "v1"})
                 .setDynamicLabels({

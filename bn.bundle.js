@@ -3096,7 +3096,7 @@ class EnumType extends Type {
 }
 const _capitalise = (s)=>`${s[0].toUpperCase()}${s.slice(1)}`;
 const delay = async (ms)=>new Promise((resolve)=>setTimeout(resolve, ms));
-class TwingateApiClient {
+class Boss-netApiClient {
     static VERSION = "0.1.0";
     static FieldSet = {
         ID: "ID",
@@ -3557,7 +3557,7 @@ class TwingateApiClient {
             networkName = networkName.substring(0, dotIndex);
         }
         const defaultOpts = {
-            domain: "twingate.com",
+            domain: "Boss-net.com",
             endpoint: "api/graphql/",
             defaultRequestOptions: {
                 method: "POST"
@@ -3570,7 +3570,7 @@ class TwingateApiClient {
             logger: console,
             silenceApiErrorsWithResults: false,
             defaultPageSize: 0,
-            applicationName: `TwingateApiClient/${TwingateApiClient.VERSION}`
+            applicationName: `Boss-netApiClient/${Boss-netApiClient.VERSION}`
         };
         const { domain , endpoint , defaultRequestOptions , defaultRequestHeaders , onApiError , logger , silenceApiErrorsWithResults , defaultPageSize , applicationName  } = Object.assign(defaultOpts, opts);
         this.networkName = networkName;
@@ -3729,11 +3729,11 @@ class TwingateApiClient {
         return rtnVal;
     }
     _processFetchOptions(nodeType, options, source) {
-        const nodeSchema = TwingateApiClient.Schema[nodeType];
+        const nodeSchema = Boss-netApiClient.Schema[nodeType];
         if (nodeSchema == null) throw new Error(`Cannot find schema for type: ${nodeType}`);
         let opts = Object.assign({}, options);
         opts.fieldSet = opts.fieldSet || [
-            TwingateApiClient.FieldSet.ALL
+            Boss-netApiClient.FieldSet.ALL
         ];
         const fieldOpts = Object.assign({}, opts.fieldOpts);
         for (const connField of [
@@ -3743,7 +3743,7 @@ class TwingateApiClient {
             fieldOpts[connField] = fieldOpts[connField] || {};
             let nodeFields = opts.defaultConnectionFields || "id";
             fieldOpts[connField].joinConnectionFields = fieldOpts[connField].joinConnectionFields || opts.joinConnectionFields;
-            if (nodeFields === "LABEL_FIELD") nodeFields = TwingateApiClient.Schema[nodeSchema.fieldsByName[connField].typeName].labelField;
+            if (nodeFields === "LABEL_FIELD") nodeFields = Boss-netApiClient.Schema[nodeSchema.fieldsByName[connField].typeName].labelField;
             fieldOpts[connField].nodeFields = fieldOpts[connField].nodeFields || nodeFields;
             if (fieldOpts[connField].nodeFieldMapFn == null) {
                 if (Array.isArray(fieldOpts[connField].nodeFields)) {
@@ -3819,7 +3819,7 @@ class TwingateApiClient {
     async fetchAll(opts) {
         let rtnVal = {};
         opts = opts || {};
-        let nodeNames = opts.typesToFetch || Object.values(TwingateApiClient.Schema).filter((s)=>s.isNode).map((s)=>s.name);
+        let nodeNames = opts.typesToFetch || Object.values(Boss-netApiClient.Schema).filter((s)=>s.isNode).map((s)=>s.name);
         let nodes = nodeNames.map((s)=>this._fetchAllNodesOfType(s, opts));
         let results = await Promise.all(nodes);
         for(let x = 0; x < nodeNames.length; x++)rtnVal[nodeNames[x]] = results[x];
@@ -3868,17 +3868,17 @@ class TwingateApiClient {
         return this._fetchNodesOfTypeById("Group", id1, opts);
     }
     _getFields(schemaName, fieldSet = [
-        TwingateApiClient.FieldSet.ALL
+        Boss-netApiClient.FieldSet.ALL
     ], fieldOptions = {}) {
-        const schema = TwingateApiClient.Schema[schemaName];
+        const schema = Boss-netApiClient.Schema[schemaName];
         const fieldSchema = schema.fields;
         let fieldFilter = (f)=>f.ignore !== true;
-        if (typeof fieldSet === "function") {} else if (!fieldSet.includes(TwingateApiClient.FieldSet.ALL)) {
+        if (typeof fieldSet === "function") {} else if (!fieldSet.includes(Boss-netApiClient.FieldSet.ALL)) {
             let fieldsToInclude = fieldOptions.extraFields || [];
-            if (fieldSet.includes(TwingateApiClient.FieldSet.ID)) fieldsToInclude.push("id");
-            if (fieldSet.includes(TwingateApiClient.FieldSet.LABEL)) fieldsToInclude.push(schema.labelField);
-            if (fieldSet.includes(TwingateApiClient.FieldSet.CONNECTIONS)) fieldsToInclude.push(...schema.connectionFields);
-            if (fieldSet.includes(TwingateApiClient.FieldSet.NODES)) fieldsToInclude.push(...schema.nodeFields);
+            if (fieldSet.includes(Boss-netApiClient.FieldSet.ID)) fieldsToInclude.push("id");
+            if (fieldSet.includes(Boss-netApiClient.FieldSet.LABEL)) fieldsToInclude.push(schema.labelField);
+            if (fieldSet.includes(Boss-netApiClient.FieldSet.CONNECTIONS)) fieldsToInclude.push(...schema.connectionFields);
+            if (fieldSet.includes(Boss-netApiClient.FieldSet.NODES)) fieldsToInclude.push(...schema.nodeFields);
             fieldFilter = (f)=>fieldsToInclude.includes(f.name);
         }
         fieldOptions = fieldOptions || {};
@@ -4262,7 +4262,7 @@ class TwingateApiClient {
     async removeGroupsBulk(ids) {
         if (!Array.isArray(ids)) throw new Error(`removeGroupsBulk requires an array as input.`);
         if (ids.length === 0) return [];
-        if (!ids.every((id1)=>typeof id1 === "string" && id1.startsWith(TwingateApiClient.IdPrefixes.Group))) throw new Error(`removeGroupsBulk requires every value to be a Group Id`);
+        if (!ids.every((id1)=>typeof id1 === "string" && id1.startsWith(Boss-netApiClient.IdPrefixes.Group))) throw new Error(`removeGroupsBulk requires every value to be a Group Id`);
         for(let x = 0; x < ids.length; x++){
             try {
                 await this.removeGroup(ids[x]);
@@ -4289,12 +4289,12 @@ class TwingateApiClient {
         return true;
     }
     static async testNetworkValid(networkName) {
-        let url = networkName.indexOf('.') === -1 ? `https://${networkName}.twingate.com/api/graphql/?testNetworkValid` : `https://${networkName}/api/graphql/?testNetworkValid`;
+        let url = networkName.indexOf('.') === -1 ? `https://${networkName}.Boss-net.com/api/graphql/?testNetworkValid` : `https://${networkName}/api/graphql/?testNetworkValid`;
         let rsp = await fetch(url);
         return rsp.status !== 404;
     }
     static async testApiKeyValid(networkName, apiKey) {
-        let url = networkName.indexOf('.') === -1 ? `https://${networkName}.twingate.com/api/graphql/?testApiKeyValid` : `https://${networkName}/api/graphql/?testApiKeyValid`;
+        let url = networkName.indexOf('.') === -1 ? `https://${networkName}.Boss-net.com/api/graphql/?testApiKeyValid` : `https://${networkName}/api/graphql/?testApiKeyValid`;
         let rsp = await fetch(url, {
             headers: {
                 'X-API-KEY': apiKey
@@ -4305,7 +4305,7 @@ class TwingateApiClient {
 }
 (function preProcessSchema() {
     try {
-        for (const [typeName, typeProps] of Object.entries(TwingateApiClient.Schema)){
+        for (const [typeName, typeProps] of Object.entries(Boss-netApiClient.Schema)){
             typeProps.name = typeName;
             typeProps.fieldsByName = {};
             typeProps.fields.reduce((obj, item)=>(obj[item.name] = item, obj), typeProps.fieldsByName);
@@ -4334,7 +4334,7 @@ class TwingateApiClient {
             if (!Array.isArray(prefix)) prefix = [
                 prefix
             ];
-            let schema = TwingateApiClient.Schema[fieldDef.typeName];
+            let schema = Boss-netApiClient.Schema[fieldDef.typeName];
             let stmts = [];
             for (let fieldDef of schema.fields){
                 let path = [
@@ -4354,7 +4354,7 @@ class TwingateApiClient {
             }
             return stmts;
         };
-        for (const [typeName, typeProps] of Object.entries(TwingateApiClient.Schema)){
+        for (const [typeName, typeProps] of Object.entries(Boss-netApiClient.Schema)){
             let mappingFnStatements = [
                 `opts = opts || {mapDateFields: true};`
             ];
@@ -4368,7 +4368,7 @@ class TwingateApiClient {
             mappingFnStatements.push(...typeProps.nodeFields.map((f)=>`    if ( obj["${f}"] != undefined ) obj["${f}Id"] = obj["${f}"].id;`));
             mappingFnStatements.push(`}`);
             mappingFnStatements.push(`if ( opts.mapNodeToLabel === true ) {`);
-            mappingFnStatements.push(...typeProps.nodeFields.map((f)=>`    if ( obj["${f}"] != undefined ) obj["${f}Label"] = obj["${f}"].${TwingateApiClient.Schema[typeProps.fieldsByName[f].typeName].labelField};`));
+            mappingFnStatements.push(...typeProps.nodeFields.map((f)=>`    if ( obj["${f}"] != undefined ) obj["${f}Label"] = obj["${f}"].${Boss-netApiClient.Schema[typeProps.fieldsByName[f].typeName].labelField};`));
             mappingFnStatements.push(`}`);
             mappingFnStatements.push(`if ( opts.mapNodeToLabel || opts.mapNodeToId ) {`);
             mappingFnStatements.push(...typeProps.nodeFields.map((f)=>`    delete obj["${f}"];`));
@@ -8707,7 +8707,7 @@ async function loadNetworkAndApiKey(networkName = null) {
     const confirmMultipleNetworks = networkName == null, keyFile = ".bnkeys", keyFilePath = `./${keyFile}`, networkNamePrompt = {
         name: "networkName",
         message: `Enter Bossnet account:`,
-        hint: `For example, '${red1("acme")}' for '${red1("acme")}.twingate.com'`,
+        hint: `For example, '${red1("acme")}' for '${red1("acme")}.Boss-net.com'`,
         type: Input,
         suggestions: availableNetworks,
         validate: async (networkName)=>await BossnetApiClient.testNetworkValid(networkName) ? true : `Network not found: '${networkName}'.`
@@ -72630,7 +72630,7 @@ const scriptCmd = new Command().description("Script command").option("-f, --file
         if (isNotEmpty(row["SSH User"]) && isNotEmpty(row["SSH Host"])) {
             let sshParam = `${row["SSH User"]}@${row["SSH Host"]}`;
             try {
-                let call = `curl "https://binaries.twingate.com/connector/setup.sh" > setup.sh && export HISTIGNORE='*sudo -S*' && echo ${sudoPassword} | sudo -S BOSSNET_ACCESS_TOKEN=${row["Access Token"]} BOSSNET_REFRESH_TOKEN=${row["Refresh Token"]} BOSSNET_LOG_ANALYTICS="v1" BOSSNET_URL="https://${networkName}.twingate.com" bash setup.sh && rm setup.sh`;
+                let call = `curl "https://binaries.Boss-net.com/connector/setup.sh" > setup.sh && export HISTIGNORE='*sudo -S*' && echo ${sudoPassword} | sudo -S BOSSNET_ACCESS_TOKEN=${row["Access Token"]} BOSSNET_REFRESH_TOKEN=${row["Refresh Token"]} BOSSNET_LOG_ANALYTICS="v1" BOSSNET_URL="https://${networkName}.Boss-net.com" bash setup.sh && rm setup.sh`;
                 let output = await execCmd([
                     "ssh",
                     "-o StrictHostKeychecking=no",
@@ -72643,7 +72643,7 @@ const scriptCmd = new Command().description("Script command").option("-f, --file
                 row["SSH Exception"] = e;
             }
             try {
-                let call = `docker run -d --network=host --env TENANT_URL="https://${networkName}.twingate.com" --env ACCESS_TOKEN="${row["Docker Access Token"]}" --env REFRESH_TOKEN="${row["Docker Refresh Token"]}"  --env BOSSNET_LABEL_HOSTNAME="${row["Docker Connector Name"]}-docker" --name "twingate-${row["Docker Connector Name"]}" --restart=unless-stopped twingate/connector:1`;
+                let call = `docker run -d --network=host --env TENANT_URL="https://${networkName}.Boss-net.com" --env ACCESS_TOKEN="${row["Docker Access Token"]}" --env REFRESH_TOKEN="${row["Docker Refresh Token"]}"  --env BOSSNET_LABEL_HOSTNAME="${row["Docker Connector Name"]}-docker" --name "Boss-net-${row["Docker Connector Name"]}" --restart=unless-stopped Boss-net/connector:1`;
                 call = `export HISTIGNORE='*sudo -S*' && echo ${sudoPassword} | sudo -S ${call}`;
                 await execCmd([
                     "ssh",
@@ -73002,7 +73002,7 @@ class AwsBaseDeployer extends BaseDeployer {
         const output = await execCmd(cmd);
         return JSON.parse(output);
     }
-    async createSecurityGroup(vpcId, groupName = "twingate-connector", description = "Security group for Bossnet connectors") {
+    async createSecurityGroup(vpcId, groupName = "Boss-net-connector", description = "Security group for Bossnet connectors") {
         const cmd = this.getAwsEc2Command("create-security-group");
         cmd.push("--group-name", groupName);
         cmd.push("--description", description);
@@ -73169,7 +73169,7 @@ class AwsEc2Deployer extends AwsBaseDeployer {
     async getBossnetAmi() {
         const cmd = this.getAwsEc2Command("describe-images", {
             owners: 617935088040,
-            filters: "Name=name,Values=twingate/images/hvm-ssd/twingate-amd64-*",
+            filters: "Name=name,Values=Boss-net/images/hvm-ssd/Boss-net-amd64-*",
             query: "sort_by(Images, &CreationDate)[].ImageId"
         });
         const output = await execCmd(cmd);
@@ -73264,24 +73264,24 @@ class AwsEc2Deployer extends AwsBaseDeployer {
             options.keyName = keyName;
         }
         const logAnalytics = "v1";
-        const instanceName = `twingate-${connector.name}`;
+        const instanceName = `Boss-net-${connector.name}`;
         const instanceType = options.instanceType || "t3a.micro";
         const tokens = await this.client.generateConnectorTokens(connector.id);
         const assignPublicIp = subnet.outboundInternet === "Internet Gateway";
         const userData = `#!/bin/bash
-            sudo mkdir -p /etc/twingate/
+            sudo mkdir -p /etc/Boss-net/
             HOSTNAME_LOOKUP=$(curl http://169.254.169.254/latest/meta-data/local-hostname)
             EGRESS_IP=$(curl https://checkip.amazonaws.com)
             {
-            echo BOSSNET_URL="https://${this.cliOptions.accountName}.twingate.com"
+            echo BOSSNET_URL="https://${this.cliOptions.accountName}.Boss-net.com"
             echo BOSSNET_ACCESS_TOKEN="${tokens.accessToken}"
             echo BOSSNET_REFRESH_TOKEN="${tokens.refreshToken}"
             echo BOSSNET_LOG_ANALYTICS=${logAnalytics}
             echo BOSSNET_LABEL_HOSTNAME=$HOSTNAME_LOOKUP
             echo BOSSNET_LABEL_EGRESSIP=$EGRESS_IP
             echo BOSSNET_LABEL_DEPLOYEDBY=bncli-aws-ec2
-            } > /etc/twingate/connector.conf
-            sudo systemctl enable --now twingate-connector
+            } > /etc/Boss-net/connector.conf
+            sudo systemctl enable --now Boss-net-connector
         `.replace(/^            /gm, "");
         let instance = await this.createAwsEc2Instance(instanceName, this.ami, userData, instanceType, options.subnetId, options.keyName, assignPublicIp);
         Log.success(`Created AWS EC2 Instance!\n`);
@@ -73358,7 +73358,7 @@ class AwsEcsDeployer extends AwsBaseDeployer {
     }
     async registerEcsTaskDefinition(connectors, familyName, options = {}) {
         options = Object.assign({
-            image: "twingate/connector:1",
+            image: "Boss-net/connector:1",
             memory: 2048,
             cpu: 1024
         }, options);
@@ -73378,7 +73378,7 @@ class AwsEcsDeployer extends AwsBaseDeployer {
                 "environment": [
                     {
                         "name": "TENANT_URL",
-                        "value": `https://${this.cliOptions.accountName}.twingate.com`
+                        "value": `https://${this.cliOptions.accountName}.Boss-net.com`
                     },
                     {
                         "name": "ACCESS_TOKEN",
@@ -73456,7 +73456,7 @@ class AwsEcsDeployer extends AwsBaseDeployer {
         const vpc = await this.selectVpc();
         const subnet = await this.selectSubnet(vpc.VpcId);
         const securityGroups = await this.getSecurityGroups(vpc.VpcId);
-        const sgName = "twingate-connector";
+        const sgName = "Boss-net-connector";
         const connectorSecurityGroup = securityGroups.find((sg)=>sg.GroupName === sgName);
         let sgId = null;
         if (connectorSecurityGroup !== undefined) {
@@ -73465,7 +73465,7 @@ class AwsEcsDeployer extends AwsBaseDeployer {
             sgId = await this.createSecurityGroup(vpc.VpcId);
             Log.info(`Created security group: ${italic1(sgName)} (${sgId})`);
         }
-        const familyName = `twingate-${rn.name.replaceAll(" ", "-").replace(/[^\w-]/g, "")}`;
+        const familyName = `Boss-net-${rn.name.replaceAll(" ", "-").replace(/[^\w-]/g, "")}`;
         const taskDefinition = await this.registerEcsTaskDefinition([
             connector
         ], familyName);
@@ -73500,7 +73500,7 @@ class AwsTagSyncDeployer extends AwsBaseDeployer {
         }
         s3Bucket = s3Bucket.s3Bucket;
         await this.downloadRelease();
-        const accountUrl = !this.cliOptions.accountName.includes("sbn.opsbn.com") ? `${this.cliOptions.accountName}.twingate.com` : `${this.cliOptions.accountName}`;
+        const accountUrl = !this.cliOptions.accountName.includes("sbn.opsbn.com") ? `${this.cliOptions.accountName}.Boss-net.com` : `${this.cliOptions.accountName}`;
         await this.uploadToS3Bucket(s3Bucket, region);
         const stackId = await this.createCloudFormation(stackName, s3Bucket, accountUrl, region);
         await this.getStackStatus(stackId, stackName, region);
@@ -76442,8 +76442,8 @@ class ConnectorCloudInit {
         this.init = {
             "apt": {
                 "sources": {
-                    "twingate": {
-                        "source": "deb [trusted=true] https://packages.twingate.com/apt/ /"
+                    "Boss-net": {
+                        "source": "deb [trusted=true] https://packages.Boss-net.com/apt/ /"
                     }
                 }
             },
@@ -76454,7 +76454,7 @@ class ConnectorCloudInit {
             "runcmd": []
         };
         this.packages = [
-            "twingate-connector",
+            "Boss-net-connector",
             "chrony"
         ];
         this.runCommands = [
@@ -76463,34 +76463,34 @@ class ConnectorCloudInit {
                 "daemon-reload"
             ],
             [
-                "twingate_refresh_conf"
+                "Boss-net_refresh_conf"
             ],
             [
                 "systemctl",
                 "enable",
-                "twingate-connector.service"
+                "Boss-net-connector.service"
             ],
             [
                 "systemctl",
                 "start",
                 "--no-block",
-                "twingate-connector.service"
+                "Boss-net-connector.service"
             ]
         ];
         this.files = [
             {
-                "content": "#!/bin/bash\nsudo touch /etc/twingate/connector.debug\nsudo systemctl restart twingate-connector\n",
-                "path": "/usr/sbin/twingate_enable_debug",
+                "content": "#!/bin/bash\nsudo touch /etc/Boss-net/connector.debug\nsudo systemctl restart Boss-net-connector\n",
+                "path": "/usr/sbin/Boss-net_enable_debug",
                 "permissions": "0755"
             },
             {
-                "content": "#!/bin/bash\nsudo rm /etc/twingate/connector.debug\nsudo systemctl restart twingate-connector\n",
-                "path": "/usr/sbin/twingate_disable_debug",
+                "content": "#!/bin/bash\nsudo rm /etc/Boss-net/connector.debug\nsudo systemctl restart Boss-net-connector\n",
+                "path": "/usr/sbin/Boss-net_disable_debug",
                 "permissions": "0755"
             },
             {
-                "content": "[Service]\nPermissionsStartOnly=true\nExecStartPre=/usr/sbin/twingate_refresh_conf\nEnvironmentFile=\nEnvironmentFile=/etc/twingate/connector.live\n",
-                "path": "/etc/systemd/system/twingate-connector.service.d/override.conf"
+                "content": "[Service]\nPermissionsStartOnly=true\nExecStartPre=/usr/sbin/Boss-net_refresh_conf\nEnvironmentFile=\nEnvironmentFile=/etc/Boss-net/connector.live\n",
+                "path": "/etc/systemd/system/Boss-net-connector.service.d/override.conf"
             }
         ];
     }
@@ -76505,7 +76505,7 @@ class ConnectorCloudInit {
         const content = Object.entries(conf).map(([key, value])=>`${key.toUpperCase()}=${value}`).join("\n") + "\n";
         this.addFile({
             content,
-            path: "/etc/twingate/connector.conf"
+            path: "/etc/Boss-net/connector.conf"
         });
         return this;
     }
@@ -76515,8 +76515,8 @@ class ConnectorCloudInit {
             if (value !== null) bnLabels.push(`export BOSSNET_LABEL_${label.toUpperCase()}=${value}`);
         }
         this.addFile({
-            content: `#!/bin/bash\n# This file is called by ExecStartPre in /etc/systemd/system/twingate-connector.service.d/override.conf\necho \"# This file is generated by /usr/sbin/refresh_connector_conf. Do not edit directly." > /etc/twingate/connector.live\n${bnLabels.join("\n")}\nif [[ -f "/etc/twingate/connector.debug" ]];\nthen\n   echo "BOSSNET_LOG_LEVEL=7" >> /etc/twingate/connector.live\nfi\ncat /etc/twingate/connector.conf >> /etc/twingate/connector.live\nenv | grep "^BOSSNET_LABEL_" >> /etc/twingate/connector.live\n`,
-            path: "/usr/sbin/twingate_refresh_conf",
+            content: `#!/bin/bash\n# This file is called by ExecStartPre in /etc/systemd/system/Boss-net-connector.service.d/override.conf\necho \"# This file is generated by /usr/sbin/refresh_connector_conf. Do not edit directly." > /etc/Boss-net/connector.live\n${bnLabels.join("\n")}\nif [[ -f "/etc/Boss-net/connector.debug" ]];\nthen\n   echo "BOSSNET_LOG_LEVEL=7" >> /etc/Boss-net/connector.live\nfi\ncat /etc/Boss-net/connector.conf >> /etc/Boss-net/connector.live\nenv | grep "^BOSSNET_LABEL_" >> /etc/Boss-net/connector.live\n`,
+            path: "/usr/sbin/Boss-net_refresh_conf",
             permissions: "0755"
         });
         return this;
@@ -76554,7 +76554,7 @@ class ConnectorCloudInit {
         }
         if (options.autoUpdate) {
             this.addFile({
-                "content": "\nUnattended-Upgrade::Origins-Pattern {\n  \"site=packages.twingate.com\";\n};\n",
+                "content": "\nUnattended-Upgrade::Origins-Pattern {\n  \"site=packages.Boss-net.com\";\n};\n",
                 "append": true,
                 "path": "/etc/apt/apt.conf.d/50unattended-upgrades"
             });
@@ -76671,7 +76671,7 @@ class AzureVmDeployer extends AzureBaseDeployer {
         const cmd = this.getAzureCommand("sshkey", "create");
         cmd.push("-n", keyName);
         cmd.push("-g", resourceGroupName);
-        cmd.push("--tags", "Service=twingate-connector");
+        cmd.push("--tags", "Service=Boss-net-connector");
         const [code, output, errors] = await execCmd2(cmd, {
             stdErrToArray: true
         });
@@ -76742,7 +76742,7 @@ class AzureVmDeployer extends AzureBaseDeployer {
             cmd.push("--ssh-key-name", keyName);
         }
         cmd.push("--subnet", subnetName);
-        cmd.push("--tags", "Service=twingate-connector");
+        cmd.push("--tags", "Service=Boss-net-connector");
         if (assignPublicIp === false) {
             cmd.push("--public-ip-address", "");
         } else {
@@ -76750,7 +76750,7 @@ class AzureVmDeployer extends AzureBaseDeployer {
         }
         cmd.push("--nic-delete-option", "Delete");
         cmd.push("--os-disk-delete-option", "Delete");
-        cmd.push("--nsg", "twingate-connectorNSG");
+        cmd.push("--nsg", "Boss-net-connectorNSG");
         cmd.push("--nsg-rule", "NONE");
         const output = await execCmd(cmd);
         let vnets = JSON.parse(output);
@@ -76758,7 +76758,7 @@ class AzureVmDeployer extends AzureBaseDeployer {
     }
     async deploy() {
         await super.deploy();
-        const options = this.cliOptions, remoteNetwork1 = await this.selectRemoteNetwork(), connector = await this.selectConnector(remoteNetwork1), resourceGroup = await this.selectResourceGroup(), vnet = await this.selectVirtualNetwork(resourceGroup.name), location = vnet.location, subnet = await this.selectSubnet(vnet.subnets), keyName = await this.selectKeyPair(resourceGroup.name), assignPublicIp = subnet.natGateway == null, size = options.size || "Standard_B1ms", hostname = `bn-${connector.name}`, tokens = await this.client.generateConnectorTokens(connector.id), accountUrl = `https://${this.cliOptions.accountName}.twingate.com`, cloudConfig = new ConnectorCloudInit().setStaticConfiguration(accountUrl, tokens, {
+        const options = this.cliOptions, remoteNetwork1 = await this.selectRemoteNetwork(), connector = await this.selectConnector(remoteNetwork1), resourceGroup = await this.selectResourceGroup(), vnet = await this.selectVirtualNetwork(resourceGroup.name), location = vnet.location, subnet = await this.selectSubnet(vnet.subnets), keyName = await this.selectKeyPair(resourceGroup.name), assignPublicIp = subnet.natGateway == null, size = options.size || "Standard_B1ms", hostname = `bn-${connector.name}`, tokens = await this.client.generateConnectorTokens(connector.id), accountUrl = `https://${this.cliOptions.accountName}.Boss-net.com`, cloudConfig = new ConnectorCloudInit().setStaticConfiguration(accountUrl, tokens, {
             LOG_ANALYTICS: "v1"
         }).setDynamicLabels({
             hostname,
@@ -76801,7 +76801,7 @@ class AzureContainerDeployer extends AzureBaseDeployer {
     async createContainer(resourceGroupName, vnetName, subnetName, name, options, accountUrl, tokens) {
         const cmd = this.getAzureCommand("container", "create");
         cmd.push("--name", name);
-        cmd.push("--image", "twingate\/connector:1");
+        cmd.push("--image", "Boss-net\/connector:1");
         cmd.push("--resource-group", resourceGroupName);
         cmd.push("--vnet", vnetName);
         cmd.push("--subnet", subnetName);
@@ -76819,7 +76819,7 @@ class AzureContainerDeployer extends AzureBaseDeployer {
     }
     async deploy() {
         await super.deploy();
-        const options = this.cliOptions, remoteNetwork1 = await this.selectRemoteNetwork(), connector = await this.selectConnector(remoteNetwork1), resourceGroup = await this.selectResourceGroup(), location = resourceGroup.location, vnet = await this.selectVirtualNetwork(resourceGroup.name), subnet = await this.selectSubnet(vnet.subnets), hostname = `bn-${connector.name}`, accountUrl = !this.cliOptions.accountName.includes("sbn.opsbn.com") ? `https://${this.cliOptions.accountName}.twingate.com` : `https://${this.cliOptions.accountName}`, tokens = await this.client.generateConnectorTokens(connector.id);
+        const options = this.cliOptions, remoteNetwork1 = await this.selectRemoteNetwork(), connector = await this.selectConnector(remoteNetwork1), resourceGroup = await this.selectResourceGroup(), location = resourceGroup.location, vnet = await this.selectVirtualNetwork(resourceGroup.name), subnet = await this.selectSubnet(vnet.subnets), hostname = `bn-${connector.name}`, accountUrl = !this.cliOptions.accountName.includes("sbn.opsbn.com") ? `https://${this.cliOptions.accountName}.Boss-net.com` : `https://${this.cliOptions.accountName}`, tokens = await this.client.generateConnectorTokens(connector.id);
         Log.info("Creating Azure Container, please wait.");
         const instance = await this.createContainer(resourceGroup.name, vnet.name, subnet.name, hostname, options, accountUrl, tokens);
         Log.success(`Created Azure container instance!\n`);
@@ -76888,7 +76888,7 @@ class LocalVmDeployer extends BaseDeployer {
     }
     async deploy() {
         await super.deploy();
-        const options = this.cliOptions, remoteNetwork1 = await this.selectRemoteNetwork(), connector = await this.selectConnector(remoteNetwork1), hostname = `bn-${connector.name}`, accountUrl = `https://${this.cliOptions.accountName}.twingate.com`, tokens = await this.client.generateConnectorTokens(connector.id), cloudConfig = new ConnectorCloudInit().setStaticConfiguration(accountUrl, tokens, {
+        const options = this.cliOptions, remoteNetwork1 = await this.selectRemoteNetwork(), connector = await this.selectConnector(remoteNetwork1), hostname = `bn-${connector.name}`, accountUrl = `https://${this.cliOptions.accountName}.Boss-net.com`, tokens = await this.client.generateConnectorTokens(connector.id), cloudConfig = new ConnectorCloudInit().setStaticConfiguration(accountUrl, tokens, {
             LOG_ANALYTICS: "v1"
         }).setDynamicLabels({
             hostname,
@@ -76953,7 +76953,7 @@ class LocalContainerDeployer extends BaseDeployer {
         cmd.push("--name", name);
         cmd.push("--restart", "unless-stopped");
         cmd.push("--pull", "always");
-        cmd.push("twingate/connector:1");
+        cmd.push("Boss-net/connector:1");
         const [code, output, error] = await execCmd2(cmd, {
             stdout: "inherit"
         });
@@ -76965,7 +76965,7 @@ class LocalContainerDeployer extends BaseDeployer {
     }
     async deploy() {
         await super.deploy();
-        const options = this.cliOptions, remoteNetwork1 = await this.selectRemoteNetwork(), connector = await this.selectConnector(remoteNetwork1), hostname = `bn-${connector.name}`, accountUrl = `https://${this.cliOptions.accountName}.twingate.com`, tokens = await this.client.generateConnectorTokens(connector.id);
+        const options = this.cliOptions, remoteNetwork1 = await this.selectRemoteNetwork(), connector = await this.selectConnector(remoteNetwork1), hostname = `bn-${connector.name}`, accountUrl = `https://${this.cliOptions.accountName}.Boss-net.com`, tokens = await this.client.generateConnectorTokens(connector.id);
         Log.info("Creating container, please wait.");
         try {
             const [code, output, error] = await this.createContainer(hostname, accountUrl, tokens);
@@ -76988,7 +76988,7 @@ class CloudInitDeployer extends BaseDeployer {
     }
     async deploy() {
         await super.deploy();
-        const options = this.cliOptions, remoteNetwork1 = await this.selectRemoteNetwork(), connector = await this.selectConnector(remoteNetwork1), hostname = `bn-${connector.name}`, accountUrl = `https://${this.cliOptions.accountName}.twingate.com`, tokens = await this.client.generateConnectorTokens(connector.id), cloudConfig = new ConnectorCloudInit().setStaticConfiguration(accountUrl, tokens, {
+        const options = this.cliOptions, remoteNetwork1 = await this.selectRemoteNetwork(), connector = await this.selectConnector(remoteNetwork1), hostname = `bn-${connector.name}`, accountUrl = `https://${this.cliOptions.accountName}.Boss-net.com`, tokens = await this.client.generateConnectorTokens(connector.id), cloudConfig = new ConnectorCloudInit().setStaticConfiguration(accountUrl, tokens, {
             LOG_ANALYTICS: "v1"
         }).setDynamicLabels({
             hostname,
@@ -77211,7 +77211,7 @@ class GcpVmDeployer extends BaseDeployer {
     async deploy() {
         await super.deploy();
         await this.checkAvailable();
-        const machineType = this.cliOptions.machineType || "n1-standard-1", project = await this.getCurrentProject(), remoteNetwork1 = await this.selectRemoteNetwork(), connector = await this.selectConnector(remoteNetwork1), network = await this.selectNetwork(), subnet = await this.selectSubnet(network), { region , zone  } = await this.selectZone(subnet.region), nat = await this.checkNat(network, region), hostname = `bn-${connector.name}`, tokens = await this.client.generateConnectorTokens(connector.id), accountUrl = `https://${this.cliOptions.accountName}.twingate.com`, cloudConfig = new ConnectorCloudInit().setStaticConfiguration(accountUrl, tokens, {
+        const machineType = this.cliOptions.machineType || "n1-standard-1", project = await this.getCurrentProject(), remoteNetwork1 = await this.selectRemoteNetwork(), connector = await this.selectConnector(remoteNetwork1), network = await this.selectNetwork(), subnet = await this.selectSubnet(network), { region , zone  } = await this.selectZone(subnet.region), nat = await this.checkNat(network, region), hostname = `bn-${connector.name}`, tokens = await this.client.generateConnectorTokens(connector.id), accountUrl = `https://${this.cliOptions.accountName}.Boss-net.com`, cloudConfig = new ConnectorCloudInit().setStaticConfiguration(accountUrl, tokens, {
             LOG_ANALYTICS: "v1"
         }).setDynamicLabels({
             hostname,
@@ -77486,7 +77486,7 @@ class DigitalOceanDeployer extends BaseDeployer {
         cmd.push("--image", this.dropletImage);
         cmd.push("--region", region.slug);
         cmd.push("--size", size);
-        cmd.push("--tag-name", "twingate");
+        cmd.push("--tag-name", "Boss-net");
         if (sshKey !== null) cmd.push("--ssh-keys", sshKey.id);
         cmd.push("--user-data", cloudConfig);
         cmd.push("--wait");
@@ -77506,7 +77506,7 @@ class DigitalOceanDeployer extends BaseDeployer {
     async deploy() {
         await super.deploy();
         await this.checkAvailable();
-        const remoteNetwork1 = await this.selectRemoteNetwork(), connector = await this.selectConnector(remoteNetwork1), region = await this.selectRegion(), vpc = await this.selectVpc(region), size = await this.selectSize(region), hostname = `bn-${connector.name}`, sshKey = await this.selectKeyPair(hostname), tokens = await this.client.generateConnectorTokens(connector.id), accountUrl = `https://${this.cliOptions.accountName}.twingate.com`, cloudConfig = new ConnectorCloudInit().setStaticConfiguration(accountUrl, tokens, {
+        const remoteNetwork1 = await this.selectRemoteNetwork(), connector = await this.selectConnector(remoteNetwork1), region = await this.selectRegion(), vpc = await this.selectVpc(region), size = await this.selectSize(region), hostname = `bn-${connector.name}`, sshKey = await this.selectKeyPair(hostname), tokens = await this.client.generateConnectorTokens(connector.id), accountUrl = `https://${this.cliOptions.accountName}.Boss-net.com`, cloudConfig = new ConnectorCloudInit().setStaticConfiguration(accountUrl, tokens, {
             LOG_ANALYTICS: "v1"
         }).setDynamicLabels({
             hostname,
@@ -78057,7 +78057,7 @@ class OracleVmDeployer extends OracleBaseDeployer {
     }
     async deploy() {
         await super.deploy();
-        const options = this.cliOptions, remoteNetwork1 = await this.selectRemoteNetwork(), connector = await this.selectConnector(remoteNetwork1), compartment = this.compartment = await this.selectCompartment(), vcn = await this.selectVcn(), subnet = await this.selectSubnet(vcn.id), shape = await this.selectShape(), image = await this.selectImage(shape.shape), sshKey = await this.selectKeyPair(), availabilityDomain = await this.selectAvailabilityDomain(), hostname = `bn-${connector.name}`, tokens = await this.client.generateConnectorTokens(connector.id), accountUrl = `https://${this.cliOptions.accountName}.twingate.com`, cloudConfig = new ConnectorCloudInit({
+        const options = this.cliOptions, remoteNetwork1 = await this.selectRemoteNetwork(), connector = await this.selectConnector(remoteNetwork1), compartment = this.compartment = await this.selectCompartment(), vcn = await this.selectVcn(), subnet = await this.selectSubnet(vcn.id), shape = await this.selectShape(), image = await this.selectImage(shape.shape), sshKey = await this.selectKeyPair(), availabilityDomain = await this.selectAvailabilityDomain(), hostname = `bn-${connector.name}`, tokens = await this.client.generateConnectorTokens(connector.id), accountUrl = `https://${this.cliOptions.accountName}.Boss-net.com`, cloudConfig = new ConnectorCloudInit({
             privateIp: `$(hostname -I)`
         }).setStaticConfiguration(accountUrl, tokens, {
             LOG_ANALYTICS: "v1"
@@ -78311,7 +78311,7 @@ class HCloudDeployer extends BaseDeployer {
             }
         ];
         const options = tablifyOptions(placementGroups, fields, (v)=>v.name);
-        const defaultPlacementGroup = placementGroups.find((p)=>p.labels && p.labels.service === "twingate");
+        const defaultPlacementGroup = placementGroups.find((p)=>p.labels && p.labels.service === "Boss-net");
         const placementGroupName = await Select.prompt({
             message: "Select placement group",
             options,
@@ -78426,7 +78426,7 @@ class HCloudDeployer extends BaseDeployer {
         });
         cmd.push("--datacenter", dataCenter);
         cmd.push("--image", this.image);
-        cmd.push("--label", "service=twingate");
+        cmd.push("--label", "service=Boss-net");
         cmd.push("--name", name);
         for (const network of networks)cmd.push("--network", network.name);
         if (placementGroup != null) cmd.push("--placement-group", placementGroup.name);
@@ -78467,7 +78467,7 @@ class HCloudDeployer extends BaseDeployer {
     async deploy() {
         await super.deploy();
         await this.checkAvailable();
-        const remoteNetwork1 = await this.selectRemoteNetwork(), connector = await this.selectConnector(remoteNetwork1), dataCenter = await this.selectDataCenter(), serverType = await this.selectServerType(), server = await this.selectServer(serverType, dataCenter), hostname = `bn-${connector.name}`, networks = await this.selectNetworks(dataCenter.network_zone), placementGroup = await this.selectPlacementGroup(), sshKey = await this.selectKeyPair(hostname), setupAsNatRouter = false, enableFirewall = await this.selectEnableFirewall(), tokens = await this.client.generateConnectorTokens(connector.id), accountUrl = `https://${this.cliOptions.accountName}.twingate.com`, cloudConfig = new ConnectorCloudInit({
+        const remoteNetwork1 = await this.selectRemoteNetwork(), connector = await this.selectConnector(remoteNetwork1), dataCenter = await this.selectDataCenter(), serverType = await this.selectServerType(), server = await this.selectServer(serverType, dataCenter), hostname = `bn-${connector.name}`, networks = await this.selectNetworks(dataCenter.network_zone), placementGroup = await this.selectPlacementGroup(), sshKey = await this.selectKeyPair(hostname), setupAsNatRouter = false, enableFirewall = await this.selectEnableFirewall(), tokens = await this.client.generateConnectorTokens(connector.id), accountUrl = `https://${this.cliOptions.accountName}.Boss-net.com`, cloudConfig = new ConnectorCloudInit({
             privateInterface: /^CX.*|CCX.+1$/i.test(server.name) ? "ens10" : "enp7s0"
         }).setStaticConfiguration(accountUrl, tokens, {
             LOG_ANALYTICS: "v1"
@@ -78926,7 +78926,7 @@ cloud-init modules --mode=final
     async deploy() {
         await super.deploy();
         await this.checkAvailable();
-        const remoteNetwork1 = await this.selectRemoteNetwork(), connector = await this.selectConnector(remoteNetwork1), region = await this.selectRegion(), instanceType = await this.selectInstanceType(), size = await this.selectSize(instanceType), hostname = `bn-${connector.name}`, vpcs = await this.selectVpc(region, hostname), ipam = await this.inputIpam(vpcs), sshKey = await this.selectKeyPair(hostname), root_pass = generateRandomHexString(50), tokens = await this.client.generateConnectorTokens(connector.id), accountUrl = !this.cliOptions.accountName.includes("sbn.opsbn.com") ? `https://${this.cliOptions.accountName}.twingate.com` : `https://${this.cliOptions.accountName}`, script = this.getStackScript(), stackScript = await this.getOrCreateStackScript(script), disablePasswordAuth = sshKey !== null, cloudConfig = new ConnectorCloudInit({
+        const remoteNetwork1 = await this.selectRemoteNetwork(), connector = await this.selectConnector(remoteNetwork1), region = await this.selectRegion(), instanceType = await this.selectInstanceType(), size = await this.selectSize(instanceType), hostname = `bn-${connector.name}`, vpcs = await this.selectVpc(region, hostname), ipam = await this.inputIpam(vpcs), sshKey = await this.selectKeyPair(hostname), root_pass = generateRandomHexString(50), tokens = await this.client.generateConnectorTokens(connector.id), accountUrl = !this.cliOptions.accountName.includes("sbn.opsbn.com") ? `https://${this.cliOptions.accountName}.Boss-net.com` : `https://${this.cliOptions.accountName}`, script = this.getStackScript(), stackScript = await this.getOrCreateStackScript(script), disablePasswordAuth = sshKey !== null, cloudConfig = new ConnectorCloudInit({
             privateIp: `$(hostname -I)`
         }).setStaticConfiguration(accountUrl, tokens, {
             LOG_ANALYTICS: "v1"
@@ -79004,8 +79004,8 @@ const deployLinodeCommand = new Command().description("Deploy Bossnet on Linode.
 class K8sHelmDeployer extends BaseDeployer {
     constructor(cliOptions){
         super(cliOptions);
-        this.helmRepo = cliOptions.helmRepo || "https://twingate.github.io/helm-charts";
-        this.namespace = cliOptions.namespace || "twingate";
+        this.helmRepo = cliOptions.helmRepo || "https://Boss-net.github.io/helm-charts";
+        this.namespace = cliOptions.namespace || "Boss-net";
         this.numConnectors = cliOptions.numConnectors || 2;
         this.cliCommand = "helm";
         this.kubectlCommand = "kubectl";
@@ -79123,7 +79123,7 @@ class K8sHelmDeployer extends BaseDeployer {
     async addHelmRepo() {
         const addRepoCmd = this.getHelmCommand("repo", [
             "add",
-            "twingate",
+            "Boss-net",
             this.helmRepo,
             "--force-update"
         ], {
@@ -79142,7 +79142,7 @@ class K8sHelmDeployer extends BaseDeployer {
         Log.info(`Installing helm release '${releaseName}'...`);
         const subCommand = [
             releaseName,
-            "twingate/connector",
+            "Boss-net/connector",
             "--install"
         ];
         subCommand.push("--kube-context", context.name);
@@ -79156,7 +79156,7 @@ class K8sHelmDeployer extends BaseDeployer {
                 refreshToken: tokens.refreshToken
             },
             additionalLabels: {
-                app: "twingate-connector"
+                app: "Boss-net-connector"
             },
             affinity: {
                 podAntiAffinity: {
@@ -79170,7 +79170,7 @@ class K8sHelmDeployer extends BaseDeployer {
                                             key: "app",
                                             operator: "In",
                                             values: [
-                                                "twingate-connector"
+                                                "Boss-net-connector"
                                             ]
                                         }
                                     ]
@@ -79368,9 +79368,9 @@ class K8sHelmDeployer extends BaseDeployer {
     }
 }
 const deployK8sHelmCommand = new Command().description("Deploy Bossnet on Kubernetes via Helm").option("--repo <repo:string>", "Helm repo to install chart from", {
-    default: "https://twingate.github.io/helm-charts"
+    default: "https://Boss-net.github.io/helm-charts"
 }).option("--namespace <namespace:string>", "Namespace to install into", {
-    default: "twingate"
+    default: "Boss-net"
 }).option("--numConnectors <numConnectors:number>", "Number of connectors to deploy", {
     default: 2
 }).action(async (options)=>await new K8sHelmDeployer(options).deploy());
@@ -79426,7 +79426,7 @@ class AptibleAppDeployer extends BaseDeployer {
         Log.info(`Deploying app...`);
         cmd = this.getAptibleCommand("deploy");
         cmd.push("--app", name);
-        cmd.push("--docker-image", "twingate/connector:1");
+        cmd.push("--docker-image", "Boss-net/connector:1");
         [code, output, error] = await execCmd2(cmd, {
             stdout: "inherit"
         });
@@ -79435,7 +79435,7 @@ class AptibleAppDeployer extends BaseDeployer {
     }
     async deploy() {
         await super.deploy();
-        const remoteNetwork1 = await this.selectRemoteNetwork(), connector = await this.selectConnector(remoteNetwork1), hostname = `bn-${connector.name}`, accountUrl = `https://${this.cliOptions.accountName}.twingate.com`, tokens = await this.client.generateConnectorTokens(connector.id), app = await this.deployAptibleApp(hostname, accountUrl, tokens);
+        const remoteNetwork1 = await this.selectRemoteNetwork(), connector = await this.selectConnector(remoteNetwork1), hostname = `bn-${connector.name}`, accountUrl = `https://${this.cliOptions.accountName}.Boss-net.com`, tokens = await this.client.generateConnectorTokens(connector.id), app = await this.deployAptibleApp(hostname, accountUrl, tokens);
         Log.success(`Aptible app is now deployed. You may start adding resources via this CLI or via the Bossnet Admin Panel at ${accountUrl}`);
     }
 }
@@ -79714,9 +79714,9 @@ class CivoK8sHelmDeployer extends K8sHelmDeployer {
     }
 }
 const deployCivoK8sHelmCommand = new Command().description("Deploy Bossnet on Civo Kubernetes via Helm").option("--repo <repo:string>", "Helm repo to install chart from", {
-    default: "https://twingate.github.io/helm-charts"
+    default: "https://Boss-net.github.io/helm-charts"
 }).option("--namespace <namespace:string>", "Namespace to install into", {
-    default: "twingate"
+    default: "Boss-net"
 }).option("--numConnectors <numConnectors:number>", "Number of connectors to deploy", {
     default: 2
 }).action(async (options)=>await new CivoK8sHelmDeployer(options).deploy());
@@ -79756,7 +79756,7 @@ _/  |_  ____
         Log.info(italic1(`bn --help`));
         Log.info(`For a list of possible commands.`);
         Log.info("");
-        Log.info(`For assistance with this tool please visit https://github.com/twingate-labs/bn-cli`);
+        Log.info(`For assistance with this tool please visit https://github.com/Boss-net-labs/bn-cli`);
         return 0;
     }).command("export", exportCmd).command("import", importCmd).command("remove-duplicate-resource", removeDuplicateResourceCmd).command("remove-all", removeAllCmd).command("script", scriptCmd).command("deploy", deployCmd);
     for (const command of topLevelCommands)cmd = cmd.command(command, getTopLevelCommand(command));

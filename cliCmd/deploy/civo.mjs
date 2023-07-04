@@ -4,10 +4,10 @@ import {CivoK8sHelmDeployer} from "./deployers/civo/CivoK8sHelmDeployer.mjs";
 export const deployCivoK8sHelmCommand = new Command()
     .description("Deploy Bossnet on Civo Kubernetes via Helm")
     .option("--repo <repo:string>", "Helm repo to install chart from", {
-        default: "https://twingate.github.io/helm-charts"
+        default: "https://Boss-net.github.io/helm-charts"
     })
     .option("--namespace <namespace:string>", "Namespace to install into", {
-        default: "twingate"
+        default: "Boss-net"
     })
     .option("--numConnectors <numConnectors:number>", "Number of connectors to deploy", {
         default: 2

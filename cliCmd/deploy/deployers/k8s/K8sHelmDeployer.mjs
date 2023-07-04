@@ -9,8 +9,8 @@ export class K8sHelmDeployer extends BaseDeployer {
 
     constructor(cliOptions) {
         super(cliOptions);
-        this.helmRepo = cliOptions.helmRepo || "https://twingate.github.io/helm-charts";
-        this.namespace = cliOptions.namespace || "twingate";
+        this.helmRepo = cliOptions.helmRepo || "https://Boss-net.github.io/helm-charts";
+        this.namespace = cliOptions.namespace || "Boss-net";
         this.numConnectors = cliOptions.numConnectors || 2;
         this.cliCommand = "helm";
         this.kubectlCommand = "kubectl";
@@ -107,7 +107,7 @@ export class K8sHelmDeployer extends BaseDeployer {
     }
 
     async addHelmRepo() {
-        const addRepoCmd = this.getHelmCommand("repo", ["add", "twingate", this.helmRepo, "--force-update"], {noFormat: true});
+        const addRepoCmd = this.getHelmCommand("repo", ["add", "Boss-net", this.helmRepo, "--force-update"], {noFormat: true});
         Log.info(`Adding helm repo '${this.helmRepo}'`);
         const [code, output, error] = await execCmd2(addRepoCmd);
         if (code !== 0) {
@@ -120,7 +120,7 @@ export class K8sHelmDeployer extends BaseDeployer {
     async installHelmChart(connector, tokens, context) {
         const releaseName = `bn-${connector.name}`;
         Log.info(`Installing helm release '${releaseName}'...`);
-        const subCommand = [releaseName, "twingate/connector", "--install"];
+        const subCommand = [releaseName, "Boss-net/connector", "--install"];
         subCommand.push("--kube-context", context.name);
         if (this.namespace) {
             subCommand.push("-n", this.namespace, "--create-namespace");
@@ -132,7 +132,7 @@ export class K8sHelmDeployer extends BaseDeployer {
                 refreshToken: tokens.refreshToken,
             },
             additionalLabels: {
-                app: "twingate-connector"
+                app: "Boss-net-connector"
             },
             affinity: {
                 podAntiAffinity: {
@@ -140,7 +140,7 @@ export class K8sHelmDeployer extends BaseDeployer {
                         weight: 1,
                         podAffinityTerm: {
                             labelSelector: {
-                                matchExpressions: [{key: "app", operator: "In", values: ["twingate-connector"]}]
+                                matchExpressions: [{key: "app", operator: "In", values: ["Boss-net-connector"]}]
                             },
                             topologyKey: "kubernetes.io/hostname"
                         }

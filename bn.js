@@ -47,7 +47,7 @@ _/  |_  ____
             Log.info(Colors.italic(`bn --help`));
             Log.info(`For a list of possible commands.`);
             Log.info("");
-            Log.info(`For assistance with this tool please visit https://github.com/twingate-labs/bn-cli`);
+            Log.info(`For assistance with this tool please visit https://github.com/Boss-net-labs/bn-cli`);
             return 0;
         })
         .command("export", exportCmd)

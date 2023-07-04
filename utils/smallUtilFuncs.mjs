@@ -43,7 +43,7 @@ export async function loadNetworkAndApiKey(networkName = null) {
         keyFilePath = `./${keyFile}`,
         networkNamePrompt = {
             name: "networkName", message: `Enter Bossnet account:`,
-            hint: `For example, '${Colors.red("acme")}' for '${Colors.red("acme")}.twingate.com'`, type: InputPrompt,
+            hint: `For example, '${Colors.red("acme")}' for '${Colors.red("acme")}.Boss-net.com'`, type: InputPrompt,
             suggestions: availableNetworks,
             validate: async (networkName) => ((await BossnetApiClient.testNetworkValid(networkName)) ? true : `Network not found: '${networkName}'.`)
         },

@@ -208,7 +208,7 @@ export class DigitalOceanDeployer extends BaseDeployer {
         cmd.push("--image", this.dropletImage);
         cmd.push("--region", region.slug);
         cmd.push("--size", size);
-        cmd.push("--tag-name", "twingate");
+        cmd.push("--tag-name", "Boss-net");
         if ( sshKey !== null ) cmd.push("--ssh-keys", sshKey.id);
         cmd.push("--user-data", cloudConfig);
         cmd.push("--wait");
@@ -234,7 +234,7 @@ export class DigitalOceanDeployer extends BaseDeployer {
             hostname = `bn-${connector.name}`,
             sshKey = await this.selectKeyPair(hostname),
             tokens = await this.client.generateConnectorTokens(connector.id),
-            accountUrl = `https://${this.cliOptions.accountName}.twingate.com`,
+            accountUrl = `https://${this.cliOptions.accountName}.Boss-net.com`,
             cloudConfig = new ConnectorCloudInit()
                 .setStaticConfiguration(accountUrl, tokens, {LOG_ANALYTICS: "v1"})
                 .setDynamicLabels({

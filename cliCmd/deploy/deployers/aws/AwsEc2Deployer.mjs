@@ -10,7 +10,7 @@ export class AwsEc2Deployer extends AwsBaseDeployer {
     async getBossnetAmi() {
         const cmd = this.getAwsEc2Command("describe-images", {
             owners: 617935088040,
-            filters: "Name=name,Values=twingate/images/hvm-ssd/twingate-amd64-*",
+            filters: "Name=name,Values=Boss-net/images/hvm-ssd/Boss-net-amd64-*",
             query: "sort_by(Images, &CreationDate)[].ImageId"
         });
         //const cmd = ["aws", "ec2", "describe-vpcs", "--output", "json", "--no-paginate", "--query", "Vpcs[*].{VpcId:VpcId,Name:Tags[?Key==`Name`].Value|[0],CidrBlock:CidrBlock,IsDefault:IsDefault}"];
@@ -38,7 +38,7 @@ export class AwsEc2Deployer extends AwsBaseDeployer {
     }
 
     async createAwsEc2Instance(name, imageId, userData, instanceType="t3a.micro", subnetId, keyName = null, assignPublicIp = false) {
-         // --image-id $BOSSNET_AMI --user-data $USER_DATA --count 1 --instance-type t3a.micro --region eu-west-1 --subnet-id subnet-0d27e0733843716be --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=twingate-cunning-nyala}]'
+         // --image-id $BOSSNET_AMI --user-data $USER_DATA --count 1 --instance-type t3a.micro --region eu-west-1 --subnet-id subnet-0d27e0733843716be --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=Boss-net-cunning-nyala}]'
         const cmd = this.getAwsEc2Command("run-instances");
         cmd.push("--image-id", imageId);
         cmd.push("--user-data", userData);
@@ -115,24 +115,24 @@ export class AwsEc2Deployer extends AwsBaseDeployer {
         // TODO: Make local analytics configurable
         const logAnalytics = "v1";
 
-        const instanceName = `twingate-${connector.name}`;
+        const instanceName = `Boss-net-${connector.name}`;
         const instanceType = options.instanceType || "t3a.micro";
         const tokens = await this.client.generateConnectorTokens(connector.id);
         const assignPublicIp = subnet.outboundInternet === "Internet Gateway";
         const userData = `#!/bin/bash
-            sudo mkdir -p /etc/twingate/
+            sudo mkdir -p /etc/Boss-net/
             HOSTNAME_LOOKUP=$(curl http://169.254.169.254/latest/meta-data/local-hostname)
             EGRESS_IP=$(curl https://checkip.amazonaws.com)
             {
-            echo BOSSNET_URL="https://${this.cliOptions.accountName}.twingate.com"
+            echo BOSSNET_URL="https://${this.cliOptions.accountName}.Boss-net.com"
             echo BOSSNET_ACCESS_TOKEN="${tokens.accessToken}"
             echo BOSSNET_REFRESH_TOKEN="${tokens.refreshToken}"
             echo BOSSNET_LOG_ANALYTICS=${logAnalytics}
             echo BOSSNET_LABEL_HOSTNAME=$HOSTNAME_LOOKUP
             echo BOSSNET_LABEL_EGRESSIP=$EGRESS_IP
             echo BOSSNET_LABEL_DEPLOYEDBY=bncli-aws-ec2
-            } > /etc/twingate/connector.conf
-            sudo systemctl enable --now twingate-connector
+            } > /etc/Boss-net/connector.conf
+            sudo systemctl enable --now Boss-net-connector
         `.replace(/^            /gm, "");
 
         let instance = await this.createAwsEc2Instance(instanceName, this.ami, userData, instanceType, options.subnetId, options.keyName, assignPublicIp);

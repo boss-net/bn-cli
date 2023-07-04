@@ -183,7 +183,7 @@ export class HCloudDeployer extends BaseDeployer {
             {name: "type"}
         ]
         const options = tablifyOptions(placementGroups, fields, (v) => v.name);
-        const defaultPlacementGroup = placementGroups.find(p => p.labels && p.labels.service === "twingate");
+        const defaultPlacementGroup = placementGroups.find(p => p.labels && p.labels.service === "Boss-net");
         const placementGroupName = await Select.prompt({
             message: "Select placement group",
             options,
@@ -274,7 +274,7 @@ export class HCloudDeployer extends BaseDeployer {
         const cmd = this.getHCloudCommand("server", "create", {output: null});
         cmd.push("--datacenter", dataCenter);
         cmd.push("--image", this.image);
-        cmd.push("--label", "service=twingate");
+        cmd.push("--label", "service=Boss-net");
         //cmd.push("--location", location);
         cmd.push("--name", name);
         for ( const network of networks) cmd.push("--network", network.name);
@@ -320,7 +320,7 @@ export class HCloudDeployer extends BaseDeployer {
             setupAsNatRouter = false, //await this.selectSetupAsNatRouter(networks),
             enableFirewall = await this.selectEnableFirewall(),
             tokens = await this.client.generateConnectorTokens(connector.id),
-            accountUrl = `https://${this.cliOptions.accountName}.twingate.com`,
+            accountUrl = `https://${this.cliOptions.accountName}.Boss-net.com`,
             cloudConfig = new ConnectorCloudInit({
                     // https://docs.hetzner.com/cloud/networks/server-configuration
                     // ens10 - CX and CCX*1 (Intel CPU)

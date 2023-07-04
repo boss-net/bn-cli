@@ -23,7 +23,7 @@ export class AwsTagSyncDeployer extends AwsBaseDeployer {
         }
         s3Bucket = s3Bucket.s3Bucket
         await this.downloadRelease()
-        const accountUrl = !this.cliOptions.accountName.includes("sbn.opsbn.com") ? `${this.cliOptions.accountName}.twingate.com`: `${this.cliOptions.accountName}`
+        const accountUrl = !this.cliOptions.accountName.includes("sbn.opsbn.com") ? `${this.cliOptions.accountName}.Boss-net.com`: `${this.cliOptions.accountName}`
         await this.uploadToS3Bucket(s3Bucket, region)
         const stackId = await this.createCloudFormation(stackName, s3Bucket, accountUrl, region)
         const stackStatus = await this.getStackStatus(stackId, stackName, region)

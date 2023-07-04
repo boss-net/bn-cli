@@ -20,7 +20,7 @@ export class CloudInitDeployer extends BaseDeployer {
             remoteNetwork = await this.selectRemoteNetwork(),
             connector = await this.selectConnector(remoteNetwork),
             hostname = `bn-${connector.name}`,
-            accountUrl = `https://${this.cliOptions.accountName}.twingate.com`,
+            accountUrl = `https://${this.cliOptions.accountName}.Boss-net.com`,
             tokens = await this.client.generateConnectorTokens(connector.id),
             cloudConfig = new ConnectorCloudInit()
                 .setStaticConfiguration(accountUrl, tokens, {LOG_ANALYTICS: "v1"})

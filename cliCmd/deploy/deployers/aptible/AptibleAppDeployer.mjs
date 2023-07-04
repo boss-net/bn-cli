@@ -47,7 +47,7 @@ export class AptibleAppDeployer extends BaseDeployer {
         Log.info(`Deploying app...`);
         cmd = this.getAptibleCommand("deploy");
         cmd.push("--app", name);
-        cmd.push("--docker-image", "twingate/connector:1");
+        cmd.push("--docker-image", "Boss-net/connector:1");
         [code, output, error] = await execCmd2(cmd, {stdout: "inherit"});
         if (code !== 0) throw new Error(`CLI output for 'aptible deploy' returned non-zero status ${code}`);
 
@@ -60,7 +60,7 @@ export class AptibleAppDeployer extends BaseDeployer {
             remoteNetwork = await this.selectRemoteNetwork(),
             connector = await this.selectConnector(remoteNetwork),
             hostname = `bn-${connector.name}`,
-            accountUrl = `https://${this.cliOptions.accountName}.twingate.com`,
+            accountUrl = `https://${this.cliOptions.accountName}.Boss-net.com`,
             tokens = await this.client.generateConnectorTokens(connector.id),
             app = await this.deployAptibleApp(hostname, accountUrl, tokens)
         ;

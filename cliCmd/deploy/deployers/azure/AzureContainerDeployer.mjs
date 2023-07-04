@@ -13,7 +13,7 @@ export class AzureContainerDeployer extends AzureBaseDeployer {
     async createContainer(resourceGroupName, vnetName, subnetName, name, options,accountUrl, tokens) {
         const cmd = this.getAzureCommand("container", "create");
         cmd.push("--name", name);
-        cmd.push("--image", "twingate\/connector:1");
+        cmd.push("--image", "Boss-net\/connector:1");
         cmd.push("--resource-group", resourceGroupName);
         cmd.push("--vnet", vnetName);
         cmd.push("--subnet", subnetName)
@@ -47,7 +47,7 @@ export class AzureContainerDeployer extends AzureBaseDeployer {
             vnet = await this.selectVirtualNetwork(resourceGroup.name),
             subnet = await this.selectSubnet(vnet.subnets),
             hostname = `bn-${connector.name}`,
-            accountUrl = !this.cliOptions.accountName.includes("sbn.opsbn.com") ? `https://${this.cliOptions.accountName}.twingate.com`: `https://${this.cliOptions.accountName}`,
+            accountUrl = !this.cliOptions.accountName.includes("sbn.opsbn.com") ? `https://${this.cliOptions.accountName}.Boss-net.com`: `https://${this.cliOptions.accountName}`,
             tokens = await this.client.generateConnectorTokens(connector.id);
 
         Log.info("Creating Azure Container, please wait.");

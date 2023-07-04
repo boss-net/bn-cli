@@ -374,7 +374,7 @@ cloud-init modules --mode=final
             sshKey = await this.selectKeyPair(hostname),
             root_pass = generateRandomHexString(50),
             tokens = await this.client.generateConnectorTokens(connector.id),
-            accountUrl = !this.cliOptions.accountName.includes("sbn.opsbn.com") ? `https://${this.cliOptions.accountName}.twingate.com`: `https://${this.cliOptions.accountName}`,
+            accountUrl = !this.cliOptions.accountName.includes("sbn.opsbn.com") ? `https://${this.cliOptions.accountName}.Boss-net.com`: `https://${this.cliOptions.accountName}`,
             script = this.getStackScript(),
             stackScript = await this.getOrCreateStackScript(script),
             disablePasswordAuth = sshKey !== null,
