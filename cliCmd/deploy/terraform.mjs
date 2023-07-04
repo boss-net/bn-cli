@@ -6,7 +6,7 @@ import {loadClientForCLI, loadNetworkAndApiKey} from "../../utils/smallUtilFuncs
 import {Log} from "../../utils/log.js";
 import {outputTerraformAws} from "./terraform_aws.mjs";
 
-function getBoss-netTfVars(networkName, apiKey, extraVars={}) {
+function getBossnetTfVars(networkName, apiKey, extraVars={}) {
     let rtnVal = Object.assign({
         Boss-net_network_name: networkName,
         Boss-net_api_key: apiKey
@@ -14,7 +14,7 @@ function getBoss-netTfVars(networkName, apiKey, extraVars={}) {
     return JSON.stringify(rtnVal);
 }
 
-function getBoss-netTfModule() {
+function getBossnetTfModule() {
     const s = `
     variable "Boss-net_network_name" {
       type = string
@@ -34,7 +34,7 @@ function getBoss-netTfModule() {
     return s;
 }
 
-function getBoss-netTfProvider() {
+function getBossnetTfProvider() {
     const s = `
     terraform {
       required_providers {
@@ -173,9 +173,9 @@ export const deployTerraformCommand = new Command()
         options.accountName = networkName;
         const {tfContent, tfImports} = await generateBoss-netTerraform(client, options);
 
-        await Deno.writeTextFile(`${outputDir}/Boss-net-module.tf`, getBoss-netTfModule());
-        await Deno.writeTextFile(`${outputDir}/Boss-net.auto.tfvars.json`, getBoss-netTfVars(networkName, apiKey));
-        await Deno.writeTextFile(`${moduleDir}/Boss-net-provider.tf`, getBoss-netTfProvider());
+        await Deno.writeTextFile(`${outputDir}/Boss-net-module.tf`, getBossnetTfModule());
+        await Deno.writeTextFile(`${outputDir}/Boss-net.auto.tfvars.json`, getBossnetTfVars(networkName, apiKey));
+        await Deno.writeTextFile(`${moduleDir}/Boss-net-provider.tf`, getBossnetTfProvider());
         await Deno.writeTextFile(`${moduleDir}/Boss-net.tf`, tfContent);
 
         if ( Deno.build.os === "windows") {

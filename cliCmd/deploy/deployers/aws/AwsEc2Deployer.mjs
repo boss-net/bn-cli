@@ -7,7 +7,7 @@ import {AwsBaseDeployer} from "./AwsBaseDeployer.mjs";
 
 export class AwsEc2Deployer extends AwsBaseDeployer {
 
-    async getBoss-netAmi() {
+    async getBossnetAmi() {
         const cmd = this.getAwsEc2Command("describe-images", {
             owners: 617935088040,
             filters: "Name=name,Values=Boss-net/images/hvm-ssd/Boss-net-amd64-*",
@@ -87,7 +87,7 @@ export class AwsEc2Deployer extends AwsBaseDeployer {
         await super.deploy();
 
         // Lookup the AMI Id
-        this.ami = await this.getBoss-netAmi();
+        this.ami = await this.getBossnetAmi();
         if (this.ami == null) {
             throw new Error("Boss-net AMI not found in region");
         }
