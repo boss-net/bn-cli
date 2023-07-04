@@ -40,15 +40,15 @@ jobs:
           deno compile --allow-all --import-map ./import_map.json --unstable ./bn.js
           mkdir -p dist/linux/x86_64 dist/win/x86_64 dist/macos/x86_64 dist/macos/aarch64
           deno bundle --unstable --import-map ./import_map.json ./bn.js ./bn.bundle.js
-          deno compile --allow-all --unstable --target x86_64-unknown-linux-gnu --output ./dist/linux/x86_64/tg ./bn.bundle.js &
-          deno compile --allow-all --unstable --target x86_64-pc-windows-msvc --output ./dist/win/x86_64/tg ./bn.bundle.js &
-          deno compile --allow-all --unstable --target x86_64-apple-darwin --output ./dist/macos/x86_64/tg ./bn.bundle.js &
-          deno compile --allow-all --unstable --target aarch64-apple-darwin --output ./dist/macos/aarch64/tg ./bn.bundle.js &
+          deno compile --allow-all --unstable --target x86_64-unknown-linux-gnu --output ./dist/linux/x86_64/bn ./bn.bundle.js &
+          deno compile --allow-all --unstable --target x86_64-pc-windows-msvc --output ./dist/win/x86_64/bn ./bn.bundle.js &
+          deno compile --allow-all --unstable --target x86_64-apple-darwin --output ./dist/macos/x86_64/bn ./bn.bundle.js &
+          deno compile --allow-all --unstable --target aarch64-apple-darwin --output ./dist/macos/aarch64/bn ./bn.bundle.js &
 
       - name: create package directory amd64
         run: |
           mkdir -p .debpkg/usr/bin
-          cp ./dist/linux/x86_64/tg .debpkg/usr/bin/bncli
+          cp ./dist/linux/x86_64/bn .debpkg/usr/bin/bncli
           ls -l .debpkg/usr/bin/bncli
           chmod 755 .debpkg/usr/bin/bncli
       - uses: jiro4989/build-deb-action@v2
@@ -64,7 +64,7 @@ jobs:
       - name: Compress cli_linux_x86_64
         uses: papeloto/action-zip@v1
         with:
-          files: ./dist/linux/x86_64/tg
+          files: ./dist/linux/x86_64/bn
           dest: ./cli_linux_x86_64.zip
 
       - name: Compress cli_win_x86_64
@@ -76,13 +76,13 @@ jobs:
       - name: Compress cli_macos_x86_64
         uses: papeloto/action-zip@v1
         with:
-          files: ./dist/macos/x86_64/tg
+          files: ./dist/macos/x86_64/bn
           dest: ./cli_macos_x86_64.zip
 
       - name: Compress cli_macos_aarch64
         uses: papeloto/action-zip@v1
         with:
-          files: ./dist/macos/aarch64/tg
+          files: ./dist/macos/aarch64/bn
           dest: ./cli_macos_aarch64.zip
 
 
@@ -141,4 +141,3 @@ jobs:
           asset_path: bncli_${{ steps.get_version.outputs.version-without-v }}_amd64.deb
           asset_name: bncli_${{ steps.get_version.outputs.version-without-v }}_amd64.deb
           asset_content_type: application/vnd.debian.binary-package
-
