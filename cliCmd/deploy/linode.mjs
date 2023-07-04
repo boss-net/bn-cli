@@ -3,7 +3,7 @@ import {LinodeVmDeployer} from "./deployers/linode/LinodeVmDeployer.mjs";
 
 // BEGIN Commands
 export const deployLinodeVMommand = new Command()
-    .description("Deploy Bossnet on Linode VM")
+    .description("Deploy Boss-net on Linode VM")
     .option("--type <string>", "Default machine size", {
         default: "g6-dedicated-2"
     })
@@ -13,6 +13,6 @@ export const deployLinodeVMommand = new Command()
     .action(async (options) => await (new LinodeVmDeployer(options)).deploy());
 
 export const deployLinodeCommand = new Command()
-    .description("Deploy Bossnet on Linode. Required Linode CLI to be installed.")
+    .description("Deploy Boss-net on Linode. Required Linode CLI to be installed.")
     .command("vm", deployLinodeVMommand)
 ;

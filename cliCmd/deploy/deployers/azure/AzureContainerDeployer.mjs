@@ -20,14 +20,14 @@ export class AzureContainerDeployer extends AzureBaseDeployer {
         cmd.push("--cpu", options.cpu)
         cmd.push("--memory", options.memory)
 
-        // let envString =`TENANT_URL=${accountUrl} ACCESS_TOKEN=${tokens.accessToken} REFRESH_TOKEN=${tokens.refreshToken} BOSSNET_TIMESTAMP_FORMAT=2 BOSSNET_LABEL_DEPLOYEDBY=bncli-az-acs`;
+        // let envString =`TENANT_URL=${accountUrl} ACCESS_TOKEN=${tokens.accessToken} REFRESH_TOKEN=${tokens.refreshToken} Boss-net_TIMESTAMP_FORMAT=2 Boss-net_LABEL_DEPLOYEDBY=tgcli-az-acs`;
         // cmd.push("--environment-variables", envString);
         cmd.push("--environment-variables")
         cmd.push(`TENANT_URL=${accountUrl}`)
         cmd.push(`ACCESS_TOKEN=${tokens.accessToken}`)
         cmd.push(`REFRESH_TOKEN=${tokens.refreshToken}`)
-        cmd.push(`BOSSNET_TIMESTAMP_FORMAT=2`)
-        cmd.push(`BOSSNET_LABEL_DEPLOYEDBY=bncli-az-acs`)
+        cmd.push(`Boss-net_TIMESTAMP_FORMAT=2`)
+        cmd.push(`Boss-net_LABEL_DEPLOYEDBY=tgcli-az-acs`)
 
 
         const output = await execCmd(cmd);
@@ -46,8 +46,8 @@ export class AzureContainerDeployer extends AzureBaseDeployer {
             location = resourceGroup.location,
             vnet = await this.selectVirtualNetwork(resourceGroup.name),
             subnet = await this.selectSubnet(vnet.subnets),
-            hostname = `bn-${connector.name}`,
-            accountUrl = !this.cliOptions.accountName.includes("sbn.opsbn.com") ? `https://${this.cliOptions.accountName}.Boss-net.com`: `https://${this.cliOptions.accountName}`,
+            hostname = `tg-${connector.name}`,
+            accountUrl = !this.cliOptions.accountName.includes("stg.opstg.com") ? `https://${this.cliOptions.accountName}.boss-net.github.io`: `https://${this.cliOptions.accountName}`,
             tokens = await this.client.generateConnectorTokens(connector.id);
 
         Log.info("Creating Azure Container, please wait.");

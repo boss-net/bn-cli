@@ -21,7 +21,7 @@ function objectSearch(array, key){
 /**
  * used to remove duplcate resource using key
  * ${remoteNetworkLabel}-${addressValue}-${protocolsAllowIcmp}-${protocolsTcpPolicy}-${protocolsTcpPorts}-${remoteNetworkLabel}-${protocolsUdpPolicy}
- * from the bn export
+ * from the tg export
  */
 export const removeDuplicateResourceCmd = new Command()
     .option("-f, --file <string>", "Path to Excel file to find from", {
@@ -30,7 +30,7 @@ export const removeDuplicateResourceCmd = new Command()
     .option("-o, --output-file [value:string]", "Output filename")
     .option("-s, --sync [boolean]", "Attempt to synchronise entities with the same natural identifier")
     .option("-y, --assume-yes [boolean]", "Automatic yes to prompts; assume 'yes' as answer to all prompts")
-    .description("Import from excel file to a Bossnet account")
+    .description("Import from excel file to a Boss-net account")
     .hidden()
     .action(async (options) => {
         const {networkName, apiKey, client} = await loadClientForCLI(options);

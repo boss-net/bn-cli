@@ -65,7 +65,7 @@ export class AwsEcsDeployer extends AwsBaseDeployer {
                 "memory": options.memory,
                 "cpu": options.cpu,
                 "environment": [
-                    {"name": "TENANT_URL", "value": `https://${this.cliOptions.accountName}.Boss-net.com`},
+                    {"name": "TENANT_URL", "value": `https://${this.cliOptions.accountName}.boss-net.github.io`},
                     {
                         "name": "ACCESS_TOKEN",
                         "value": tokens.accessToken
@@ -75,8 +75,8 @@ export class AwsEcsDeployer extends AwsBaseDeployer {
                         "value": tokens.refreshToken
                     },
                     {
-                        "name": "BOSSNET_LABEL_DEPLOYEDBY",
-                        "value": "bncli-aws-ecs"
+                        "name": "Boss-net_LABEL_DEPLOYEDBY",
+                        "value": "tgcli-aws-ecs"
                     }
                 ]
             };

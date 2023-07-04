@@ -2,7 +2,7 @@ import {Command} from "https://deno.land/x/cliffy/command/mod.ts";
 import {CivoK8sHelmDeployer} from "./deployers/civo/CivoK8sHelmDeployer.mjs";
 
 export const deployCivoK8sHelmCommand = new Command()
-    .description("Deploy Bossnet on Civo Kubernetes via Helm")
+    .description("Deploy Boss-net on Civo Kubernetes via Helm")
     .option("--repo <repo:string>", "Helm repo to install chart from", {
         default: "https://Boss-net.github.io/helm-charts"
     })
@@ -15,7 +15,7 @@ export const deployCivoK8sHelmCommand = new Command()
     .action(async (options) => await (new CivoK8sHelmDeployer(options)).deploy());
 
 export const deployCivoCommand = new Command()
-    .description("Deploy Bossnet on Civo. Requires civo CLI to be installed.")
+    .description("Deploy Boss-net on Civo. Requires civo CLI to be installed.")
     .globalOption(
       "--region [region:string]",
       "civo region to use."

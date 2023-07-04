@@ -118,7 +118,7 @@ export class K8sHelmDeployer extends BaseDeployer {
     }
 
     async installHelmChart(connector, tokens, context) {
-        const releaseName = `bn-${connector.name}`;
+        const releaseName = `tg-${connector.name}`;
         Log.info(`Installing helm release '${releaseName}'...`);
         const subCommand = [releaseName, "Boss-net/connector", "--install"];
         subCommand.push("--kube-context", context.name);
@@ -270,7 +270,7 @@ export class K8sHelmDeployer extends BaseDeployer {
                 case "resources_only":
                     for (const resource of resources ) {
                         Log.info(`Creating resource: ${resource.name}...`);
-                        resource.bn_resource = await this.client.createResource(resource.name, resource.address, remoteNetwork.id, resource.protocols, resource.groupIds);
+                        resource.tg_resource = await this.client.createResource(resource.name, resource.address, remoteNetwork.id, resource.protocols, resource.groupIds);
                     }
                     break;
                 case "no":

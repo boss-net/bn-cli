@@ -231,15 +231,15 @@ export class DigitalOceanDeployer extends BaseDeployer {
             region = await this.selectRegion(),
             vpc = await this.selectVpc(region),
             size = await this.selectSize(region),
-            hostname = `bn-${connector.name}`,
+            hostname = `tg-${connector.name}`,
             sshKey = await this.selectKeyPair(hostname),
             tokens = await this.client.generateConnectorTokens(connector.id),
-            accountUrl = `https://${this.cliOptions.accountName}.Boss-net.com`,
+            accountUrl = `https://${this.cliOptions.accountName}.boss-net.github.io`,
             cloudConfig = new ConnectorCloudInit()
                 .setStaticConfiguration(accountUrl, tokens, {LOG_ANALYTICS: "v1"})
                 .setDynamicLabels({
                     hostname,
-                    deployedBy: "bncli-digitalocean-vm",
+                    deployedBy: "tgcli-digitalocean-vm",
                     region: region.slug,
                     vpc: vpc == null ? null : vpc.name,
                     egress_ip: "$(curl -s https://checkip.amazonaws.com)"
@@ -263,10 +263,10 @@ export class DigitalOceanDeployer extends BaseDeployer {
                 table.push(["Public IP", droplet.publicIp.ip_address]);
                 table.render();
 
-                Log.info(`Please allow a few minutes for the instance to initialize. You should then be able to add the private IP as a resource in Bossnet.`);
+                Log.info(`Please allow a few minutes for the instance to initialize. You should then be able to add the private IP as a resource in Boss-net.`);
                 Log.info(`You can do this via the Admin Console UI or via the CLI:`);
-                Log.info(Colors.italic(`bn resource create "${remoteNetwork.name}" "Connector host ${droplet.name}" "${droplet.privateIp.ip_address}" Everyone`));
-                Log.info(`Once done and authenticated to Bossnet you can connect to the instance via SSH using the following command:`);
+                Log.info(Colors.italic(`tg resource create "${remoteNetwork.name}" "Connector host ${droplet.name}" "${droplet.privateIp.ip_address}" Everyone`));
+                Log.info(`Once done and authenticated to Boss-net you can connect to the instance via SSH using the following command:`);
                 if (sshKey) {
                     Log.info(`${Colors.italic(`ssh -i ${sshKey.name} root@${droplet.privateIp.ip_address}`)}`);
                 }

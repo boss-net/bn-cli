@@ -4,7 +4,7 @@ import {ensureDir} from "https://deno.land/std/fs/mod.ts";
 function getAwsTfVars() {
     let rtnVal = {
         aws_region: "eu-west-1",
-        aws_name_prefix: "bn",
+        aws_name_prefix: "tg",
         aws_cidr_block: "10.100.0.0/16",
         aws_availability_zones: ["eu-west-1a", "eu-west-1b"],
         aws_public_subnet_cidrs: ["10.100.0.0/20","10.100.16.0/20"],

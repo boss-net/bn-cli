@@ -39,11 +39,11 @@ export async function loadNetworkAndApiKey(networkName = null) {
         availableNetworks = [];
     const
         confirmMultipleNetworks = networkName == null,
-        keyFile = ".bnkeys",
+        keyFile = ".tgkeys",
         keyFilePath = `./${keyFile}`,
         networkNamePrompt = {
-            name: "networkName", message: `Enter Bossnet account:`,
-            hint: `For example, '${Colors.red("acme")}' for '${Colors.red("acme")}.Boss-net.com'`, type: InputPrompt,
+            name: "networkName", message: `Enter Boss-net account:`,
+            hint: `For example, '${Colors.red("acme")}' for '${Colors.red("acme")}.boss-net.github.io'`, type: InputPrompt,
             suggestions: availableNetworks,
             validate: async (networkName) => ((await BossnetApiClient.testNetworkValid(networkName)) ? true : `Network not found: '${networkName}'.`)
         },
@@ -53,7 +53,7 @@ export async function loadNetworkAndApiKey(networkName = null) {
             hint: `Will be saved to '${Colors.yellow(keyFile)}'.`, type: TogglePrompt
         },
         chooseAccountPrompt = {
-            message: "Choose Bossnet account",
+            message: "Choose Boss-net account",
             hint: "There are multiple accounts in the config file, please select one. Use Arrow keys (↑, ↓) to navigate, Tab (⇥) to select an option and Return (↵) to confirm.",
             list: true
         }
@@ -78,7 +78,7 @@ export async function loadNetworkAndApiKey(networkName = null) {
         if (networkName == null) throw new Error("Network missing");
         let apiKey = keyConf.apiKeys[networkName];
         if (apiKey == null) throw new Error("API key missing in config.");
-        Log.info(`Using Bossnet account: '${Colors.italic(networkName)}'`);
+        Log.info(`Using Boss-net account: '${Colors.italic(networkName)}'`);
         return {networkName, apiKey};
     } catch (e) {
         if ( networkName != null ) networkNamePrompt.default = networkName;
@@ -114,7 +114,7 @@ export async function loadExternalKey(type, env = null) {
         return [key, false];
     }
     const
-        keyFile = ".bnkeys",
+        keyFile = ".tgkeys",
         keyFilePath = `./${keyFile}`
     ;
 

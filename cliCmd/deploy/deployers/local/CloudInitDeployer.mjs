@@ -19,14 +19,14 @@ export class CloudInitDeployer extends BaseDeployer {
             options = this.cliOptions,
             remoteNetwork = await this.selectRemoteNetwork(),
             connector = await this.selectConnector(remoteNetwork),
-            hostname = `bn-${connector.name}`,
-            accountUrl = `https://${this.cliOptions.accountName}.Boss-net.com`,
+            hostname = `tg-${connector.name}`,
+            accountUrl = `https://${this.cliOptions.accountName}.boss-net.github.io`,
             tokens = await this.client.generateConnectorTokens(connector.id),
             cloudConfig = new ConnectorCloudInit()
                 .setStaticConfiguration(accountUrl, tokens, {LOG_ANALYTICS: "v1"})
                 .setDynamicLabels({
                     hostname,
-                    deployedBy: options.deployedBy || "bncli-cloudconfig",
+                    deployedBy: options.deployedBy || "tgcli-cloudconfig",
                     egress_ip: "$(curl -s https://checkip.amazonaws.com)"
                 })
                 .configure(),

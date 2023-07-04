@@ -52,7 +52,7 @@ export class OracleVmDeployer extends OracleBaseDeployer {
         });
         if ( useKeyPair === "SKIP" ) return null;
         else if ( useKeyPair === "NEW" ) {
-            const keyName = await Input.prompt({message: "Key name", default: "bn-connector"});
+            const keyName = await Input.prompt({message: "Key name", default: "tg-connector"});
 
             const keyCreated = await this.generateSshKey(keyName);
             if ( !keyCreated ) throw new Error("Could not create ssh key");
@@ -153,16 +153,16 @@ export class OracleVmDeployer extends OracleBaseDeployer {
             image = await this.selectImage(shape.shape),
             sshKey = await this.selectKeyPair(),
             availabilityDomain = await this.selectAvailabilityDomain(),
-            hostname = `bn-${connector.name}`,
+            hostname = `tg-${connector.name}`,
             tokens = await this.client.generateConnectorTokens(connector.id),
-            accountUrl = `https://${this.cliOptions.accountName}.Boss-net.com`,
+            accountUrl = `https://${this.cliOptions.accountName}.boss-net.github.io`,
             cloudConfig = new ConnectorCloudInit({
                     privateIp: `$(hostname -I)`
                 })
                 .setStaticConfiguration(accountUrl, tokens, {LOG_ANALYTICS: "v1"})
                 .setDynamicLabels({
                     hostname,
-                    deployedBy: "bncli-oci-vm",
+                    deployedBy: "tgcli-oci-vm",
                     compartment: compartment["name"],
                     vcn: vcn["display-name"],
                     subnet: subnet["display-name"],
@@ -189,10 +189,10 @@ export class OracleVmDeployer extends OracleBaseDeployer {
         if ( vnic["public-ip"] ) table.push(["Public IP", vnic["public-ip"]]);
         table.render();
 
-        Log.info(`Please allow a few minutes for the instance to initialize. You should then be able to add the private IP as a resource in Bossnet.`);
+        Log.info(`Please allow a few minutes for the instance to initialize. You should then be able to add the private IP as a resource in Boss-net.`);
         Log.info(`You can do this via the Admin Console UI or via the CLI:`);
-        Log.info(Colors.italic(`bn resource create "${remoteNetwork.name}" "Connector host ${hostname}" "${vnic["private-ip"]}" Everyone`));
-        Log.info(`Once done and authenticated to Bossnet you can connect to the instance via SSH using the following command:`);
+        Log.info(Colors.italic(`tg resource create "${remoteNetwork.name}" "Connector host ${hostname}" "${vnic["private-ip"]}" Everyone`));
+        Log.info(`Once done and authenticated to Boss-net you can connect to the instance via SSH using the following command:`);
         if (sshKey) {
             Log.info(`${Colors.italic(`ssh -i ${sshKey.name} ubuntu@${vnic["private-ip"]}`)}`);
         }

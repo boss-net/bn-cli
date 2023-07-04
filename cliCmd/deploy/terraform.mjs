@@ -6,7 +6,7 @@ import {loadClientForCLI, loadNetworkAndApiKey} from "../../utils/smallUtilFuncs
 import {Log} from "../../utils/log.js";
 import {outputTerraformAws} from "./terraform_aws.mjs";
 
-function getBossnetTfVars(networkName, apiKey, extraVars={}) {
+function getBoss-netTfVars(networkName, apiKey, extraVars={}) {
     let rtnVal = Object.assign({
         Boss-net_network_name: networkName,
         Boss-net_api_key: apiKey
@@ -14,7 +14,7 @@ function getBossnetTfVars(networkName, apiKey, extraVars={}) {
     return JSON.stringify(rtnVal);
 }
 
-function getBossnetTfModule() {
+function getBoss-netTfModule() {
     const s = `
     variable "Boss-net_network_name" {
       type = string
@@ -34,12 +34,12 @@ function getBossnetTfModule() {
     return s;
 }
 
-function getBossnetTfProvider() {
+function getBoss-netTfProvider() {
     const s = `
     terraform {
       required_providers {
         Boss-net = {
-          source = "Bossnet/Boss-net"
+          source = "Boss-net/Boss-net"
           version = ">= 0.1.8"
         }
       }
@@ -62,7 +62,7 @@ function getBossnetTfProvider() {
     return s;
 }
 
-async function generateBossnetTerraform(client, options) {
+async function generateBoss-netTerraform(client, options) {
 
     const configForTerraform = {
         typesToFetch: ["RemoteNetwork", "Connector", "Group"],
@@ -73,7 +73,7 @@ async function generateBossnetTerraform(client, options) {
         }
     }
     const allNodes = await client.fetchAll(configForTerraform);
-    // Bossnet Resources needs to be fetched differently
+    // Boss-net Resources needs to be fetched differently
     configForTerraform.fieldSet = [BossnetApiClient.FieldSet.ALL];
     allNodes.Resource = (await client.fetchAllResources(configForTerraform));
 
@@ -97,7 +97,7 @@ async function generateBossnetTerraform(client, options) {
     allNodes.Resource.forEach(tfIdMapper);
     allNodes.Resource.forEach(n => tfImports.push(`terraform import module.Boss-net.Boss-net_resource.${n.tfId} ${n.id}`));
 
-    const remoteNetworksTf = "\n#\n# Bossnet Remote Networks\n#\n" + allNodes.RemoteNetwork.map(n => `
+    const remoteNetworksTf = "\n#\n# Boss-net Remote Networks\n#\n" + allNodes.RemoteNetwork.map(n => `
         resource "Boss-net_remote_network" "${n.tfId}" { # Id: ${n.id}
           name = "${n.name}"
         }
@@ -107,7 +107,7 @@ async function generateBossnetTerraform(client, options) {
         
         `.replace(/^        /gm, "")).join("\n");
 
-    const connectorsTf = "\n#\n# Bossnet Connectors\n#\n" + allNodes.Connector.map(n => `
+    const connectorsTf = "\n#\n# Boss-net Connectors\n#\n" + allNodes.Connector.map(n => `
         resource "Boss-net_connector" "${n.tfId}" { # Id: ${n.id}
           name = "${n.name}"
           remote_network_id = Boss-net_remote_network.${idMap[n.remoteNetworkId]}.id
@@ -117,7 +117,7 @@ async function generateBossnetTerraform(client, options) {
         }
         `.replace(/^        /gm, "")).join("\n");
 
-    const groupsTf = "\n#\n# Bossnet Groups\n#\n" + allNodes.Group.map(n => `
+    const groupsTf = "\n#\n# Boss-net Groups\n#\n" + allNodes.Group.map(n => `
         resource "Boss-net_group" "${n.tfId}" { # Id: ${n.id}
           name = "${n.name}"
         }
@@ -126,7 +126,7 @@ async function generateBossnetTerraform(client, options) {
         }
         `.replace(/^        /gm, "")).join("\n");
 
-    const resourcesTf = "\n#\n# Bossnet Resources\n#\n" + allNodes.Resource.map(n => `
+    const resourcesTf = "\n#\n# Boss-net Resources\n#\n" + allNodes.Resource.map(n => `
         resource "Boss-net_resource" "${n.tfId}" { # Id: ${n.id}
           name = "${n.name}"
           address = "${n.address.value}"
@@ -156,7 +156,7 @@ async function generateBossnetTerraform(client, options) {
 
 
 export const deployTerraformCommand = new Command()
-    .description("Deploy Bossnet via Terraform")
+    .description("Deploy Boss-net via Terraform")
     .type("targetCloud", new EnumType(["none", "aws"]))
     .option("-t, --target-cloud [value:targetCloud]", "Target cloud", {default: "none"})
     .option("-o, --output-directory [value:string]", "Output directory")
@@ -171,11 +171,11 @@ export const deployTerraformCommand = new Command()
         const {networkName, apiKey, client} = await loadClientForCLI(options);
         options.apiKey = apiKey;
         options.accountName = networkName;
-        const {tfContent, tfImports} = await generateBossnetTerraform(client, options);
+        const {tfContent, tfImports} = await generateBoss-netTerraform(client, options);
 
-        await Deno.writeTextFile(`${outputDir}/Boss-net-module.tf`, getBossnetTfModule());
-        await Deno.writeTextFile(`${outputDir}/Boss-net.auto.tfvars.json`, getBossnetTfVars(networkName, apiKey));
-        await Deno.writeTextFile(`${moduleDir}/Boss-net-provider.tf`, getBossnetTfProvider());
+        await Deno.writeTextFile(`${outputDir}/Boss-net-module.tf`, getBoss-netTfModule());
+        await Deno.writeTextFile(`${outputDir}/Boss-net.auto.tfvars.json`, getBoss-netTfVars(networkName, apiKey));
+        await Deno.writeTextFile(`${moduleDir}/Boss-net-provider.tf`, getBoss-netTfProvider());
         await Deno.writeTextFile(`${moduleDir}/Boss-net.tf`, tfContent);
 
         if ( Deno.build.os === "windows") {
@@ -188,6 +188,6 @@ export const deployTerraformCommand = new Command()
         if ( options.targetCloud === "aws") {
             await outputTerraformAws(outputDir, client, options)
         }
-        Log.warn(`Note: Your Bossnet API key has been written into '${outputDir}/Boss-net.auto.tfvars.json', please take care to keep it secure`);
+        Log.warn(`Note: Your Boss-net API key has been written into '${outputDir}/Boss-net.auto.tfvars.json', please take care to keep it secure`);
         Log.success(`Deploy to '${outputDir}' completed.`);
     });

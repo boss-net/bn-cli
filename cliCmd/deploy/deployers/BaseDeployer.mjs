@@ -70,7 +70,7 @@ export class BaseDeployer {
         if (remoteNetworks.length === 0) {
             const remoteNetworkName = await Input.prompt({
                 message: "Remote Network name",
-                hint: "There are no Remote Networks in your Bossnet account. Please enter a name to create one."
+                hint: "There are no Remote Networks in your Boss-net account. Please enter a name to create one."
             });
             remoteNetwork = await client.createRemoteNetwork(remoteNetworkName);
         } else {
@@ -119,7 +119,7 @@ export class BaseDeployer {
 
     async inputUserEmails(message=null, hint=null) {
         message = message || `Enter any email addresses that should be members of these groups (${Colors.italic('optional')})`;
-        hint = hint || "Separate multiple addresses with a comma (','). Email addresses must exist in your Bossnet account. Press return to skip.";
+        hint = hint || "Separate multiple addresses with a comma (','). Email addresses must exist in your Boss-net account. Press return to skip.";
         let complete = false,
             userIds = []
         ;
@@ -131,7 +131,7 @@ export class BaseDeployer {
             for ( const email of emails ) {
                 const userId = await this.client.lookupUserByEmail(email);
                 if ( userId === null ) {
-                    Log.warn(`Email invalid or not found. If this is a new user please add them to your Bossnet account: ${email}`);
+                    Log.warn(`Email invalid or not found. If this is a new user please add them to your Boss-net account: ${email}`);
                     complete = false;
                 }
                 else {

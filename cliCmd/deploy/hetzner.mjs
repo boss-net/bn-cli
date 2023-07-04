@@ -2,7 +2,7 @@ import {Command} from "https://deno.land/x/cliffy/command/mod.ts";
 import {HCloudDeployer} from "./deployers/hcloud/HCloudDeployer.mjs";
 
 export const deployHCloudVmCommand = new Command()
-    .description("Deploy Bossnet on Hetzner Cloud (virtual machine)")
+    .description("Deploy Boss-net on Hetzner Cloud (virtual machine)")
     /*
     .option("--size <string>", "Default machine size", {
         default: "s-1vcpu-2gb"
@@ -14,7 +14,7 @@ export const deployHCloudVmCommand = new Command()
     .action(async (options) => (await (new HCloudDeployer(options)).deploy()));
 
 export const deployHetznerCommand = new Command()
-    .description("Deploy Bossnet on Hetzner. Requires hcloud CLI to be installed.")
+    .description("Deploy Boss-net on Hetzner. Requires hcloud CLI to be installed.")
     /*
     .globalOption(
       "--context [context:string]",

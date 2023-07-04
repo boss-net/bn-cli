@@ -151,7 +151,7 @@ export class CivoK8sHelmDeployer extends K8sHelmDeployer {
               rules = await this.getCivoFirewallRules(firewallId, region),
               inboundRules = rules.filter(rule => rule.action === "allow" && rule.direction === "ingress"),
               message = "Confirm removal of the above ingress rules?",
-              hint = "If you confirm your cluster will be secured and the only way to access it will be via Bossnet."
+              hint = "If you confirm your cluster will be secured and the only way to access it will be via Boss-net."
         ;
         const table = new Table()
             .header(["Action", "CIDR", "Direction", "Label"])
@@ -198,6 +198,6 @@ export class CivoK8sHelmDeployer extends K8sHelmDeployer {
         if ( this.deployed ) {
             await this.lockDownFirewall(civoCluster, region);
         }
-        Log.success(`Bossnet deployed to Civo cluster '${Colors.italic(civoCluster.name)}' and firewall rules locked down.`);
+        Log.success(`Boss-net deployed to Civo cluster '${Colors.italic(civoCluster.name)}' and firewall rules locked down.`);
     }
 }

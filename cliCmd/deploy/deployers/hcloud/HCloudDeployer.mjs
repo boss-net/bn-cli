@@ -312,7 +312,7 @@ export class HCloudDeployer extends BaseDeployer {
             dataCenter = await this.selectDataCenter(),
             serverType = await this.selectServerType(),
             server = await this.selectServer(serverType, dataCenter),
-            hostname = `bn-${connector.name}`,
+            hostname = `tg-${connector.name}`,
             networks = await this.selectNetworks(dataCenter.network_zone),
             placementGroup = await this.selectPlacementGroup(),
             primaryIpv4 = null, // TODO
@@ -320,7 +320,7 @@ export class HCloudDeployer extends BaseDeployer {
             setupAsNatRouter = false, //await this.selectSetupAsNatRouter(networks),
             enableFirewall = await this.selectEnableFirewall(),
             tokens = await this.client.generateConnectorTokens(connector.id),
-            accountUrl = `https://${this.cliOptions.accountName}.Boss-net.com`,
+            accountUrl = `https://${this.cliOptions.accountName}.boss-net.github.io`,
             cloudConfig = new ConnectorCloudInit({
                     // https://docs.hetzner.com/cloud/networks/server-configuration
                     // ens10 - CX and CCX*1 (Intel CPU)
@@ -330,7 +330,7 @@ export class HCloudDeployer extends BaseDeployer {
                 .setStaticConfiguration(accountUrl, tokens, {LOG_ANALYTICS: "v1"})
                 .setDynamicLabels({
                     hostname,
-                    deployedBy: "bncli-hetzner-vm",
+                    deployedBy: "tgcli-hetzner-vm",
                     datacenter: dataCenter.name,
                     location: dataCenter.location.name,
                     zone: dataCenter.network_zone,
@@ -364,10 +364,10 @@ export class HCloudDeployer extends BaseDeployer {
 
                 if (!instance.privateIp) return;
 
-                Log.info(`Please allow a few minutes for the instance to initialize. You should then be able to add the private IP as a resource in Bossnet.`);
+                Log.info(`Please allow a few minutes for the instance to initialize. You should then be able to add the private IP as a resource in Boss-net.`);
                 Log.info(`You can do this via the Admin Console UI or via the CLI:`);
-                Log.info(Colors.italic(`bn resource create "${remoteNetwork.name}" "Connector host ${hostname}" "${instance.privateIp}" Everyone`));
-                Log.info(`Once done and authenticated to Bossnet you can connect to the instance via SSH using the following command:`);
+                Log.info(Colors.italic(`tg resource create "${remoteNetwork.name}" "Connector host ${hostname}" "${instance.privateIp}" Everyone`));
+                Log.info(`Once done and authenticated to Boss-net you can connect to the instance via SSH using the following command:`);
                 if (sshKey) {
                     Log.info(`${Colors.italic(`ssh -i ${sshKey} root@${instance.privateIp}`)}`);
                 } else {

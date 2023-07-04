@@ -7,7 +7,7 @@ import {AwsBaseDeployer} from "./AwsBaseDeployer.mjs";
 
 export class AwsEc2Deployer extends AwsBaseDeployer {
 
-    async getBossnetAmi() {
+    async getBoss-netAmi() {
         const cmd = this.getAwsEc2Command("describe-images", {
             owners: 617935088040,
             filters: "Name=name,Values=Boss-net/images/hvm-ssd/Boss-net-amd64-*",
@@ -38,7 +38,7 @@ export class AwsEc2Deployer extends AwsBaseDeployer {
     }
 
     async createAwsEc2Instance(name, imageId, userData, instanceType="t3a.micro", subnetId, keyName = null, assignPublicIp = false) {
-         // --image-id $BOSSNET_AMI --user-data $USER_DATA --count 1 --instance-type t3a.micro --region eu-west-1 --subnet-id subnet-0d27e0733843716be --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=Boss-net-cunning-nyala}]'
+         // --image-id $Boss-net_AMI --user-data $USER_DATA --count 1 --instance-type t3a.micro --region eu-west-1 --subnet-id subnet-0d27e0733843716be --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=Boss-net-cunning-nyala}]'
         const cmd = this.getAwsEc2Command("run-instances");
         cmd.push("--image-id", imageId);
         cmd.push("--user-data", userData);
@@ -87,9 +87,9 @@ export class AwsEc2Deployer extends AwsBaseDeployer {
         await super.deploy();
 
         // Lookup the AMI Id
-        this.ami = await this.getBossnetAmi();
+        this.ami = await this.getBoss-netAmi();
         if (this.ami == null) {
-            throw new Error("Bossnet AMI not found in region");
+            throw new Error("Boss-net AMI not found in region");
         }
 
         const options = this.cliOptions;
@@ -124,13 +124,13 @@ export class AwsEc2Deployer extends AwsBaseDeployer {
             HOSTNAME_LOOKUP=$(curl http://169.254.169.254/latest/meta-data/local-hostname)
             EGRESS_IP=$(curl https://checkip.amazonaws.com)
             {
-            echo BOSSNET_URL="https://${this.cliOptions.accountName}.Boss-net.com"
-            echo BOSSNET_ACCESS_TOKEN="${tokens.accessToken}"
-            echo BOSSNET_REFRESH_TOKEN="${tokens.refreshToken}"
-            echo BOSSNET_LOG_ANALYTICS=${logAnalytics}
-            echo BOSSNET_LABEL_HOSTNAME=$HOSTNAME_LOOKUP
-            echo BOSSNET_LABEL_EGRESSIP=$EGRESS_IP
-            echo BOSSNET_LABEL_DEPLOYEDBY=bncli-aws-ec2
+            echo Boss-net_URL="https://${this.cliOptions.accountName}.boss-net.github.io"
+            echo Boss-net_ACCESS_TOKEN="${tokens.accessToken}"
+            echo Boss-net_REFRESH_TOKEN="${tokens.refreshToken}"
+            echo Boss-net_LOG_ANALYTICS=${logAnalytics}
+            echo Boss-net_LABEL_HOSTNAME=$HOSTNAME_LOOKUP
+            echo Boss-net_LABEL_EGRESSIP=$EGRESS_IP
+            echo Boss-net_LABEL_DEPLOYEDBY=tgcli-aws-ec2
             } > /etc/Boss-net/connector.conf
             sudo systemctl enable --now Boss-net-connector
         `.replace(/^            /gm, "");
@@ -144,11 +144,11 @@ export class AwsEc2Deployer extends AwsBaseDeployer {
         table.push(["Private Hostname", instance.PrivateDnsName]);
         table.push(["Security Group", `${instance.SecurityGroups[0].GroupId} (${instance.SecurityGroups[0].GroupName})`]);
         table.render();
-        Log.info(`Please allow a few minutes for the instance to initialize. You should then be able to add the private IP as a resource in Bossnet.`);
+        Log.info(`Please allow a few minutes for the instance to initialize. You should then be able to add the private IP as a resource in Boss-net.`);
         Log.info(`You can do this via the Admin Console UI or via the CLI:`);
-        Log.info(Colors.italic(`bn resource create "${rn.name}" "Connector host ${instanceName}" "${instance.PrivateIpAddress}" Everyone`));
+        Log.info(Colors.italic(`tg resource create "${rn.name}" "Connector host ${instanceName}" "${instance.PrivateIpAddress}" Everyone`));
         if (options.keyName) {
-            Log.info(`Once done and authenticated to Bossnet you can connect to the instance via SSH using the following command:`);
+            Log.info(`Once done and authenticated to Boss-net you can connect to the instance via SSH using the following command:`);
             Log.info(`${Colors.italic(`ssh -i ${options.keyName}.pem ubuntu@${instance.PrivateIpAddress}`)}`);
         }
     }
