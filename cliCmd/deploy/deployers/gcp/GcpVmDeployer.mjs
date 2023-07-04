@@ -209,9 +209,9 @@ export class GcpVmDeployer extends BaseDeployer {
             subnet = await this.selectSubnet(network),
             {region, zone} = await this.selectZone(subnet.region),
             nat = await this.checkNat(network, region),
-            hostname = `bn-${connector.name}`,
+            hostname = `tg-${connector.name}`,
             tokens = await this.client.generateConnectorTokens(connector.id),
-            accountUrl = `https://${this.cliOptions.accountName}.twingate.com`,
+            accountUrl = `https://${this.cliOptions.accountName}.boss-net.github.io`,
             cloudConfig = new ConnectorCloudInit()
                 .setStaticConfiguration(accountUrl, tokens, {LOG_ANALYTICS: "v1"})
                 .setDynamicLabels({

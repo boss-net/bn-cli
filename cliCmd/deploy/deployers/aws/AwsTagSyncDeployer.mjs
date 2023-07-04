@@ -9,7 +9,7 @@ export class AwsTagSyncDeployer extends AwsBaseDeployer {
 
     async deploy() {
         await super.deploy();
-        const stackName = "bn-aws-tag-sync"
+        const stackName = "tg-aws-tag-sync"
         const region = this.cliOptions.region
         let s3Bucket = await this.selectS3Bucket(stackName, region)
 
@@ -23,7 +23,7 @@ export class AwsTagSyncDeployer extends AwsBaseDeployer {
         }
         s3Bucket = s3Bucket.s3Bucket
         await this.downloadRelease()
-        const accountUrl = !this.cliOptions.accountName.includes("sbn.opsbn.com") ? `${this.cliOptions.accountName}.twingate.com`: `${this.cliOptions.accountName}`
+        const accountUrl = !this.cliOptions.accountName.includes("stg.opstg.com") ? `${this.cliOptions.accountName}.boss-net.github.io`: `${this.cliOptions.accountName}`
         await this.uploadToS3Bucket(s3Bucket, region)
         const stackId = await this.createCloudFormation(stackName, s3Bucket, accountUrl, region)
         const stackStatus = await this.getStackStatus(stackId, stackName, region)
@@ -169,9 +169,9 @@ export class AwsTagSyncDeployer extends AwsBaseDeployer {
     }
 
     async downloadRelease(){
-        await downloadFile("https://github.com/Bossnet-Labs/bn-aws-tag-sync/releases/latest/download/CloudFormation.yaml", "CloudFormation.yaml")
-        await downloadFile("https://github.com/Bossnet-Labs/bn-aws-tag-sync/releases/latest/download/TgAwsTagWatchLambda.zip", "TgAwsTagWatchLambda.zip")
-        Log.info("Release downloaded from https://github.com/Bossnet-Labs/bn-aws-tag-sync/releases/latest/download")
+        await downloadFile("https://github.com/Boss-net/tg-aws-tag-sync/releases/latest/download/CloudFormation.yaml", "CloudFormation.yaml")
+        await downloadFile("https://github.com/Boss-net/tg-aws-tag-sync/releases/latest/download/TgAwsTagWatchLambda.zip", "TgAwsTagWatchLambda.zip")
+        Log.info("Release downloaded from https://github.com/Boss-net/tg-aws-tag-sync/releases/latest/download")
     }
 
     async uploadToS3Bucket(bucket, region) {
@@ -194,8 +194,8 @@ export class AwsTagSyncDeployer extends AwsBaseDeployer {
         const cmd = this.getAwsCloudFormationCommand("create-stack")
         cmd.push("--stack-name", stackName)
         cmd.push("--template-body", "file://CloudFormation.yaml")
-        cmd.push("--parameters", `ParameterKey=BossnetApiKey,ParameterValue=${this.cliOptions.apiKey}`)
-        cmd.push(`ParameterKey=BossnetNetworkAddress,ParameterValue=${accountUrl}`)
+        cmd.push("--parameters", `ParameterKey=Boss-netApiKey,ParameterValue=${this.cliOptions.apiKey}`)
+        cmd.push(`ParameterKey=Boss-netNetworkAddress,ParameterValue=${accountUrl}`)
         cmd.push(`ParameterKey=S3BucketName,ParameterValue=${bucket}`)
         cmd.push(`ParameterKey=S3LambdaKey,ParameterValue=TgAwsTagWatchLambda.zip`)
         cmd.push("--capabilities", "CAPABILITY_NAMED_IAM")
@@ -203,8 +203,8 @@ export class AwsTagSyncDeployer extends AwsBaseDeployer {
 
         Log.info(`Please Wait, creating Cloudformation stack ${stackName} in region ${region}. This may take a few minutes.`)
         //todo: to be reviewed
-        Log.info("Storing Bossnet API key and network address in parameter store")
-        Log.info(`Creating role BossnetRole-${region}`)
+        Log.info("Storing Boss-net API key and network address in parameter store")
+        Log.info(`Creating role Boss-netRole-${region}`)
         Log.info("Creating Lambda function")
         Log.info("Creating EventBridge rule")
         return output.StackId

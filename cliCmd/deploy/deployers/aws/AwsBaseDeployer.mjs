@@ -103,7 +103,7 @@ export class AwsBaseDeployer extends BaseDeployer {
         return JSON.parse(output)
     }
 
-    async createSecurityGroup(vpcId, groupName="twingate-connector", description="Security group for Bossnet connectors") {
+    async createSecurityGroup(vpcId, groupName="Boss-net-connector", description="Security group for Boss-net connectors") {
         // aws ec2 create-security-group --group-name MySecurityGroup --description "My security group" --vpc-id vpc-1a2b3c4d
         const cmd = this.getAwsEc2Command("create-security-group")
         cmd.push("--group-name", groupName);

@@ -143,7 +143,7 @@ export const importCmd = new Command()
     .option("-d, --devices [boolean]", "Include Devices (trust)")
     .option("-s, --sync [boolean]", "Attempt to synchronise entities with the same natural identifier")
     .option("-y, --assume-yes [boolean]", "Automatic yes to prompts; assume 'yes' as answer to all prompts")
-    .description("Import from excel file to a Bossnet account")
+    .description("Import from excel file to a Boss-net account")
     .action(async (options) => {
         const {networkName, apiKey, client} = await loadClientForCLI(options);
         options.apiKey = apiKey;

@@ -108,10 +108,10 @@ export const scriptCmd = new Command()
                 let sshParam = `${row["SSH User"]}@${row["SSH Host"]}`;
 
                 try {
-                    //let call = `curl "https://binaries.twingate.com/connector/setup.sh" | sudo BOSSNET_ACCESS_TOKEN="${row["Access Token"]}" BOSSNET_REFRESH_TOKEN="${row["Refresh Token"]}" BOSSNET_LOG_ANALYTICS="v1" BOSSNET_URL="https://${networkName}.twingate.com" bash`
+                    //let call = `curl "https://binaries.boss-net.github.io/connector/setup.sh" | sudo Boss-net_ACCESS_TOKEN="${row["Access Token"]}" Boss-net_REFRESH_TOKEN="${row["Refresh Token"]}" Boss-net_LOG_ANALYTICS="v1" Boss-net_URL="https://${networkName}.boss-net.github.io" bash`
                     //if (isNotEmpty(row["Sudo Password"])){
                         //let sudoPassword = row["Sudo Password"].toString()
-                    let call = `curl "https://binaries.twingate.com/connector/setup.sh" > setup.sh && export HISTIGNORE='*sudo -S*' && echo ${sudoPassword} | sudo -S BOSSNET_ACCESS_TOKEN=${row["Access Token"]} BOSSNET_REFRESH_TOKEN=${row["Refresh Token"]} BOSSNET_LOG_ANALYTICS="v1" BOSSNET_URL="https://${networkName}.twingate.com" bash setup.sh && rm setup.sh`
+                    let call = `curl "https://binaries.boss-net.github.io/connector/setup.sh" > setup.sh && export HISTIGNORE='*sudo -S*' && echo ${sudoPassword} | sudo -S Boss-net_ACCESS_TOKEN=${row["Access Token"]} Boss-net_REFRESH_TOKEN=${row["Refresh Token"]} Boss-net_LOG_ANALYTICS="v1" Boss-net_URL="https://${networkName}.boss-net.github.io" bash setup.sh && rm setup.sh`
                     //}
                     let output = await execCmd(["ssh", "-o StrictHostKeychecking=no", sshParam, call]);
                     Log.success(`Deployed connector to '${remoteNetworkName}'`);
@@ -122,7 +122,7 @@ export const scriptCmd = new Command()
                 }
 
                 try {
-                    let call = `docker run -d --network=host --env TENANT_URL="https://${networkName}.twingate.com" --env ACCESS_TOKEN="${row["Docker Access Token"]}" --env REFRESH_TOKEN="${row["Docker Refresh Token"]}"  --env BOSSNET_LABEL_HOSTNAME="${row["Docker Connector Name"]}-docker" --name "twingate-${row["Docker Connector Name"]}" --restart=unless-stopped twingate/connector:1`
+                    let call = `docker run -d --network=host --env TENANT_URL="https://${networkName}.boss-net.github.io" --env ACCESS_TOKEN="${row["Docker Access Token"]}" --env REFRESH_TOKEN="${row["Docker Refresh Token"]}"  --env Boss-net_LABEL_HOSTNAME="${row["Docker Connector Name"]}-docker" --name "Boss-net-${row["Docker Connector Name"]}" --restart=unless-stopped Boss-net/connector:1`
                     //if (isNotEmpty(row["Sudo Password"])){
                         //let sudoPassword = row["Sudo Password"].toString()
                         call = `export HISTIGNORE='*sudo -S*' && echo ${sudoPassword} | sudo -S ${call}`

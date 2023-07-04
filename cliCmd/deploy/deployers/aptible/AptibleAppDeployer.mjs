@@ -39,15 +39,15 @@ export class AptibleAppDeployer extends BaseDeployer {
         cmd.push(`TENANT_URL=${accountUrl}`);
         cmd.push(`ACCESS_TOKEN=${tokens.accessToken}`);
         cmd.push(`REFRESH_TOKEN=${tokens.refreshToken}`);
-        cmd.push(`BOSSNET_LOG_ANALYTICS=v1`);
-        cmd.push(`BOSSNET_LABEL_DEPLOYEDBY=bncli-aptible`);
+        cmd.push(`Boss-net_LOG_ANALYTICS=v1`);
+        cmd.push(`Boss-net_LABEL_DEPLOYEDBY=bncli-aptible`);
         [code, output, error] = await execCmd2(cmd, {stdout: "inherit"});
         if (code !== 0) throw new Error(`CLI output for 'aptible config:set' returned non-zero status ${code}`);
 
         Log.info(`Deploying app...`);
         cmd = this.getAptibleCommand("deploy");
         cmd.push("--app", name);
-        cmd.push("--docker-image", "twingate/connector:1");
+        cmd.push("--docker-image", "Boss-net/connector:1");
         [code, output, error] = await execCmd2(cmd, {stdout: "inherit"});
         if (code !== 0) throw new Error(`CLI output for 'aptible deploy' returned non-zero status ${code}`);
 
@@ -59,13 +59,13 @@ export class AptibleAppDeployer extends BaseDeployer {
         const
             remoteNetwork = await this.selectRemoteNetwork(),
             connector = await this.selectConnector(remoteNetwork),
-            hostname = `bn-${connector.name}`,
-            accountUrl = `https://${this.cliOptions.accountName}.twingate.com`,
+            hostname = `tg-${connector.name}`,
+            accountUrl = `https://${this.cliOptions.accountName}.boss-net.github.io`,
             tokens = await this.client.generateConnectorTokens(connector.id),
             app = await this.deployAptibleApp(hostname, accountUrl, tokens)
         ;
 
-        Log.success(`Aptible app is now deployed. You may start adding resources via this CLI or via the Bossnet Admin Panel at ${accountUrl}`);
+        Log.success(`Aptible app is now deployed. You may start adding resources via this CLI or via the Boss-net Admin Panel at ${accountUrl}`);
 
     }
 }

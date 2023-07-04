@@ -8,28 +8,28 @@ import {outputTerraformAws} from "./terraform_aws.mjs";
 
 function getBossnetTfVars(networkName, apiKey, extraVars={}) {
     let rtnVal = Object.assign({
-        twingate_network_name: networkName,
-        twingate_api_key: apiKey
+        Boss-net_network_name: networkName,
+        Boss-net_api_key: apiKey
     }, extraVars);
     return JSON.stringify(rtnVal);
 }
 
 function getBossnetTfModule() {
     const s = `
-    variable "twingate_network_name" {
+    variable "Boss-net_network_name" {
       type = string
       sensitive = true
     }
-    variable "twingate_api_key" {
+    variable "Boss-net_api_key" {
       type = string
       sensitive = true
     }
 
     
-    module "twingate" {
-      source = "./twingate"
-      network_name = var.twingate_network_name
-      api_key = var.twingate_api_key
+    module "Boss-net" {
+      source = "./Boss-net"
+      network_name = var.Boss-net_network_name
+      api_key = var.Boss-net_api_key
     }`.replace(/^    /gm, "");
     return s;
 }
@@ -38,8 +38,8 @@ function getBossnetTfProvider() {
     const s = `
     terraform {
       required_providers {
-        twingate = {
-          source = "Bossnet/twingate"
+        Boss-net = {
+          source = "Boss-net/Boss-net"
           version = ">= 0.1.8"
         }
       }
@@ -54,7 +54,7 @@ function getBossnetTfProvider() {
       sensitive = true
     }
     
-    provider "twingate" {
+    provider "Boss-net" {
       api_token = var.api_key
       network   = var.network_name
     }`.replace(/^    /gm, "");
@@ -62,7 +62,7 @@ function getBossnetTfProvider() {
     return s;
 }
 
-async function generateBossnetTerraform(client, options) {
+async function generateBoss-netTerraform(client, options) {
 
     const configForTerraform = {
         typesToFetch: ["RemoteNetwork", "Connector", "Group"],
@@ -73,7 +73,7 @@ async function generateBossnetTerraform(client, options) {
         }
     }
     const allNodes = await client.fetchAll(configForTerraform);
-    // Bossnet Resources needs to be fetched differently
+    // Boss-net Resources needs to be fetched differently
     configForTerraform.fieldSet = [BossnetApiClient.FieldSet.ALL];
     allNodes.Resource = (await client.fetchAllResources(configForTerraform));
 
@@ -87,51 +87,51 @@ async function generateBossnetTerraform(client, options) {
         idMap[n.id] = n.tfId
     }
     allNodes.RemoteNetwork.forEach(tfIdMapper);
-    allNodes.RemoteNetwork.forEach(n => tfImports.push(`terraform import module.twingate.twingate_remote_network.${n.tfId} ${n.id}`));
+    allNodes.RemoteNetwork.forEach(n => tfImports.push(`terraform import module.Boss-net.Boss-net_remote_network.${n.tfId} ${n.id}`));
 
     allNodes.Connector.forEach(tfIdMapper);
-    allNodes.Connector.forEach(n => tfImports.push(`terraform import module.twingate.twingate_connector.${n.tfId} ${n.id}`));
+    allNodes.Connector.forEach(n => tfImports.push(`terraform import module.Boss-net.Boss-net_connector.${n.tfId} ${n.id}`));
     allNodes.Group.forEach(tfIdMapper);
-    allNodes.Group.forEach(n => tfImports.push(`terraform import module.twingate.twingate_group.${n.tfId} ${n.id}`));
+    allNodes.Group.forEach(n => tfImports.push(`terraform import module.Boss-net.Boss-net_group.${n.tfId} ${n.id}`));
 
     allNodes.Resource.forEach(tfIdMapper);
-    allNodes.Resource.forEach(n => tfImports.push(`terraform import module.twingate.twingate_resource.${n.tfId} ${n.id}`));
+    allNodes.Resource.forEach(n => tfImports.push(`terraform import module.Boss-net.Boss-net_resource.${n.tfId} ${n.id}`));
 
-    const remoteNetworksTf = "\n#\n# Bossnet Remote Networks\n#\n" + allNodes.RemoteNetwork.map(n => `
-        resource "twingate_remote_network" "${n.tfId}" { # Id: ${n.id}
+    const remoteNetworksTf = "\n#\n# Boss-net Remote Networks\n#\n" + allNodes.RemoteNetwork.map(n => `
+        resource "Boss-net_remote_network" "${n.tfId}" { # Id: ${n.id}
           name = "${n.name}"
         }
         output "network-${n.tfId}" {
-          value = twingate_remote_network.${n.tfId}
+          value = Boss-net_remote_network.${n.tfId}
         }
         
         `.replace(/^        /gm, "")).join("\n");
 
-    const connectorsTf = "\n#\n# Bossnet Connectors\n#\n" + allNodes.Connector.map(n => `
-        resource "twingate_connector" "${n.tfId}" { # Id: ${n.id}
+    const connectorsTf = "\n#\n# Boss-net Connectors\n#\n" + allNodes.Connector.map(n => `
+        resource "Boss-net_connector" "${n.tfId}" { # Id: ${n.id}
           name = "${n.name}"
-          remote_network_id = twingate_remote_network.${idMap[n.remoteNetworkId]}.id
+          remote_network_id = Boss-net_remote_network.${idMap[n.remoteNetworkId]}.id
         }
         output "connector-${n.tfId}" {
-          value = twingate_connector.${n.tfId}
+          value = Boss-net_connector.${n.tfId}
         }
         `.replace(/^        /gm, "")).join("\n");
 
-    const groupsTf = "\n#\n# Bossnet Groups\n#\n" + allNodes.Group.map(n => `
-        resource "twingate_group" "${n.tfId}" { # Id: ${n.id}
+    const groupsTf = "\n#\n# Boss-net Groups\n#\n" + allNodes.Group.map(n => `
+        resource "Boss-net_group" "${n.tfId}" { # Id: ${n.id}
           name = "${n.name}"
         }
         output "group-${n.tfId}" {
-          value = twingate_group.${n.tfId}
+          value = Boss-net_group.${n.tfId}
         }
         `.replace(/^        /gm, "")).join("\n");
 
-    const resourcesTf = "\n#\n# Bossnet Resources\n#\n" + allNodes.Resource.map(n => `
-        resource "twingate_resource" "${n.tfId}" { # Id: ${n.id}
+    const resourcesTf = "\n#\n# Boss-net Resources\n#\n" + allNodes.Resource.map(n => `
+        resource "Boss-net_resource" "${n.tfId}" { # Id: ${n.id}
           name = "${n.name}"
           address = "${n.address.value}"
-          remote_network_id = twingate_remote_network.${idMap[n.remoteNetworkId]}.id
-          group_ids = [${n.groups.map(groupId => `twingate_group.${idMap[groupId]}.id`).join(", ")}]
+          remote_network_id = Boss-net_remote_network.${idMap[n.remoteNetworkId]}.id
+          group_ids = [${n.groups.map(groupId => `Boss-net_group.${idMap[groupId]}.id`).join(", ")}]
           protocols {
             allow_icmp = ${n.protocols.allowIcmp}
             tcp {
@@ -145,7 +145,7 @@ async function generateBossnetTerraform(client, options) {
           }
         }
         output "resource-${n.tfId}" {
-          value = twingate_resource.${n.tfId}
+          value = Boss-net_resource.${n.tfId}
         }
         `.replace(/^        /gm, "")).join("\n");
 
@@ -156,7 +156,7 @@ async function generateBossnetTerraform(client, options) {
 
 
 export const deployTerraformCommand = new Command()
-    .description("Deploy Bossnet via Terraform")
+    .description("Deploy Boss-net via Terraform")
     .type("targetCloud", new EnumType(["none", "aws"]))
     .option("-t, --target-cloud [value:targetCloud]", "Target cloud", {default: "none"})
     .option("-o, --output-directory [value:string]", "Output directory")
@@ -165,29 +165,29 @@ export const deployTerraformCommand = new Command()
     .action(async (options) => {
         const outputDir = resolvePath(options.outputDirectory || "terraform");
         await ensureDir(outputDir);
-        let moduleDir = `${outputDir}/twingate`;
+        let moduleDir = `${outputDir}/Boss-net`;
         await ensureDir(moduleDir);
 
         const {networkName, apiKey, client} = await loadClientForCLI(options);
         options.apiKey = apiKey;
         options.accountName = networkName;
-        const {tfContent, tfImports} = await generateBossnetTerraform(client, options);
+        const {tfContent, tfImports} = await generateBoss-netTerraform(client, options);
 
-        await Deno.writeTextFile(`${outputDir}/twingate-module.tf`, getBossnetTfModule());
-        await Deno.writeTextFile(`${outputDir}/twingate.auto.tfvars.json`, getBossnetTfVars(networkName, apiKey));
-        await Deno.writeTextFile(`${moduleDir}/twingate-provider.tf`, getBossnetTfProvider());
-        await Deno.writeTextFile(`${moduleDir}/twingate.tf`, tfContent);
+        await Deno.writeTextFile(`${outputDir}/Boss-net-module.tf`, getBossnetTfModule());
+        await Deno.writeTextFile(`${outputDir}/Boss-net.auto.tfvars.json`, getBossnetTfVars(networkName, apiKey));
+        await Deno.writeTextFile(`${moduleDir}/Boss-net-provider.tf`, getBossnetTfProvider());
+        await Deno.writeTextFile(`${moduleDir}/Boss-net.tf`, tfContent);
 
         if ( Deno.build.os === "windows") {
-            await Deno.writeTextFile(`${outputDir}/import-twingate.bat`, tfImports.join("\r\n"));
+            await Deno.writeTextFile(`${outputDir}/import-Boss-net.bat`, tfImports.join("\r\n"));
         }
         else {
-            await Deno.writeTextFile(`${outputDir}/import-twingate.sh`, "#!/bin/sh\n"+tfImports.join("\n"), {mode: 0o755});
+            await Deno.writeTextFile(`${outputDir}/import-Boss-net.sh`, "#!/bin/sh\n"+tfImports.join("\n"), {mode: 0o755});
         }
 
         if ( options.targetCloud === "aws") {
             await outputTerraformAws(outputDir, client, options)
         }
-        Log.warn(`Note: Your Bossnet API key has been written into '${outputDir}/twingate.auto.tfvars.json', please take care to keep it secure`);
+        Log.warn(`Note: Your Boss-net API key has been written into '${outputDir}/Boss-net.auto.tfvars.json', please take care to keep it secure`);
         Log.success(`Deploy to '${outputDir}' completed.`);
     });

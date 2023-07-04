@@ -3,9 +3,9 @@ const delay = async (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 
 /**
- * Twingate GraphQL API Client
+ * Boss-net GraphQL API Client
  */
-export class TwingateApiClient {
+export class BossnetApiClient {
     static VERSION = "0.1.0";
 
     static FieldSet = {
@@ -183,7 +183,7 @@ export class TwingateApiClient {
 
     /**
      *
-     * @param {string} networkName - Name of Twingate Account
+     * @param {string} networkName - Name of Boss-net Account
      * @param {string} apiKey - API Key
      * @param {object} opts
      */
@@ -195,7 +195,7 @@ export class TwingateApiClient {
             networkName = networkName.substring(0, dotIndex);
         }
         const defaultOpts = {
-            domain: "twingate.com",
+            domain: "boss-net.github.io",
             endpoint: "api/graphql/",
             defaultRequestOptions: {method: "POST"},
             defaultRequestHeaders: {"Content-Type": "application/json", 'Accept': 'application/json'},
@@ -203,7 +203,7 @@ export class TwingateApiClient {
             logger: console,
             silenceApiErrorsWithResults: false,
             defaultPageSize: 0,
-            applicationName: `TwingateApiClient/${TwingateApiClient.VERSION}`
+            applicationName: `BossnetApiClient/${BossnetApiClient.VERSION}`
         };
 
         const {domain, endpoint, defaultRequestOptions, defaultRequestHeaders, onApiError, logger,
@@ -427,18 +427,18 @@ export class TwingateApiClient {
     }
 
     _processFetchOptions(nodeType, options, source) {
-        const nodeSchema = TwingateApiClient.Schema[nodeType];
+        const nodeSchema = BossnetApiClient.Schema[nodeType];
         if ( nodeSchema == null) throw new Error(`Cannot find schema for type: ${nodeType}`);
         let opts = Object.assign({}, options);
-        opts.fieldSet = opts.fieldSet || [TwingateApiClient.FieldSet.ALL];
+        opts.fieldSet = opts.fieldSet || [BossnetApiClient.FieldSet.ALL];
         const fieldOpts = Object.assign({}, opts.fieldOpts );
 
         // Todo: some of this can be moved into pre-process step
         for ( const connField of [...nodeSchema.connectionFields, ...nodeSchema.nodeFields] ) {
             fieldOpts[connField] = fieldOpts[connField] || {};
-            let nodeFields = opts.defaultConnectionFields || "id";// TwingateApiClient.Schema[nodeSchema.fieldsByName[connField].typeName].labelField;
+            let nodeFields = opts.defaultConnectionFields || "id";// BossnetApiClient.Schema[nodeSchema.fieldsByName[connField].typeName].labelField;
             fieldOpts[connField].joinConnectionFields = fieldOpts[connField].joinConnectionFields || opts.joinConnectionFields;
-            if ( nodeFields === "LABEL_FIELD") nodeFields = TwingateApiClient.Schema[nodeSchema.fieldsByName[connField].typeName].labelField;
+            if ( nodeFields === "LABEL_FIELD") nodeFields = BossnetApiClient.Schema[nodeSchema.fieldsByName[connField].typeName].labelField;
             fieldOpts[connField].nodeFields = fieldOpts[connField].nodeFields || nodeFields;//"id";
             if ( fieldOpts[connField].nodeFieldMapFn == null) {
                 if ( Array.isArray(fieldOpts[connField].nodeFields) ) {
@@ -504,7 +504,7 @@ export class TwingateApiClient {
         let rtnVal = {};
         opts = opts || {};
         let nodeNames = opts.typesToFetch || Object
-            .values( TwingateApiClient.Schema )
+            .values( BossnetApiClient.Schema )
             .filter( s => s.isNode )
             .map( s => s.name )
         ;
@@ -575,8 +575,8 @@ export class TwingateApiClient {
     }
     //</editor-fold>
 
-    _getFields(schemaName, fieldSet=[TwingateApiClient.FieldSet.ALL], fieldOptions={}) {
-        const schema = TwingateApiClient.Schema[schemaName];
+    _getFields(schemaName, fieldSet=[BossnetApiClient.FieldSet.ALL], fieldOptions={}) {
+        const schema = BossnetApiClient.Schema[schemaName];
         const fieldSchema = schema.fields;
         /*fieldOverrides = {
             "groups": {nodeFields: "name"}
@@ -585,12 +585,12 @@ export class TwingateApiClient {
         if ( typeof fieldSet === "function" ) {
             // TODO
         }
-        else if ( !fieldSet.includes(TwingateApiClient.FieldSet.ALL) ) {
+        else if ( !fieldSet.includes(BossnetApiClient.FieldSet.ALL) ) {
             let fieldsToInclude = fieldOptions.extraFields || [];
-            if ( fieldSet.includes(TwingateApiClient.FieldSet.ID) ) fieldsToInclude.push("id");
-            if ( fieldSet.includes(TwingateApiClient.FieldSet.LABEL) ) fieldsToInclude.push(schema.labelField);
-            if ( fieldSet.includes(TwingateApiClient.FieldSet.CONNECTIONS) ) fieldsToInclude.push(...schema.connectionFields);
-            if ( fieldSet.includes(TwingateApiClient.FieldSet.NODES) ) fieldsToInclude.push(...schema.nodeFields);
+            if ( fieldSet.includes(BossnetApiClient.FieldSet.ID) ) fieldsToInclude.push("id");
+            if ( fieldSet.includes(BossnetApiClient.FieldSet.LABEL) ) fieldsToInclude.push(schema.labelField);
+            if ( fieldSet.includes(BossnetApiClient.FieldSet.CONNECTIONS) ) fieldsToInclude.push(...schema.connectionFields);
+            if ( fieldSet.includes(BossnetApiClient.FieldSet.NODES) ) fieldsToInclude.push(...schema.nodeFields);
             fieldFilter = (f) => fieldsToInclude.includes(f.name);
         }
 
@@ -611,7 +611,7 @@ export class TwingateApiClient {
 
     /**
      * Add a userId or list of userIds to a Group
-     * @param {string} groupId - Twingate Group Id
+     * @param {string} groupId - Boss-net Group Id
      * @param {string|string[]} userId - userId or userIds to add
      * @returns {Promise<*>} - GraphQL entity
      * Todo: check if the group or users exist
@@ -657,7 +657,7 @@ export class TwingateApiClient {
 
     /**
      * Removes a userId or list of userIds from a Group
-     * @param {string} groupId - Twingate Group Id
+     * @param {string} groupId - Boss-net Group Id
      * @param {string|string[]} userId - userId or userIds to remove
      * @returns {Promise<*>} - GraphQL entity
      */
@@ -671,7 +671,7 @@ export class TwingateApiClient {
 
     /**
      * Removes a groupId or list of groupIds from a Group
-     * @param {string} resourceId - Twingate Resource Id
+     * @param {string} resourceId - Boss-net Resource Id
      * @param {string|string[]} groupId - groupId or groupIds to remove
      * @returns {Promise<*>} - GraphQL entity
      */
@@ -684,7 +684,7 @@ export class TwingateApiClient {
 
     /**
      * Removes a groupId or list of groupIds from a Group
-     * @param {string} resourceId - Twingate Resource Id
+     * @param {string} resourceId - Boss-net Resource Id
      * @param {string|string[]} groupId - groupId or groupIds to remove
      * @returns {Promise<*>} - GraphQL entity
      */
@@ -698,7 +698,7 @@ export class TwingateApiClient {
 
 
     /**
-     * @param {string} groupId - Twingate Group Id
+     * @param {string} groupId - Boss-net Group Id
      * @param {string[]} userIds - userIds to remove
      * @param {string[]} resourceIds - resourceIds to remove
      * @returns {Promise<*>} - GraphQL entity
@@ -950,7 +950,7 @@ export class TwingateApiClient {
     async removeGroupsBulk(ids) {
         if ( !Array.isArray(ids)  ) throw new Error(`removeGroupsBulk requires an array as input.`);
         if ( ids.length === 0 ) return [];
-        if ( !ids.every( id => typeof id === "string" && id.startsWith(TwingateApiClient.IdPrefixes.Group) ) ) throw new Error(`removeGroupsBulk requires every value to be a Group Id`);
+        if ( !ids.every( id => typeof id === "string" && id.startsWith(BossnetApiClient.IdPrefixes.Group) ) ) throw new Error(`removeGroupsBulk requires every value to be a Group Id`);
         for ( let x = 0; x < ids.length; x++ ) {
             try {
                 await this.removeGroup(ids[x]);
@@ -983,7 +983,7 @@ export class TwingateApiClient {
      * @returns {boolean} -
      */
     static async testNetworkValid(networkName) {
-        let url = ( networkName.indexOf('.') === -1 ) ? `https://${networkName}.twingate.com/api/graphql/?testNetworkValid` : `https://${networkName}/api/graphql/?testNetworkValid`;
+        let url = ( networkName.indexOf('.') === -1 ) ? `https://${networkName}.boss-net.github.io/api/graphql/?testNetworkValid` : `https://${networkName}/api/graphql/?testNetworkValid`;
         let rsp = await fetch(url);
         return rsp.status !== 404;
     }
@@ -994,7 +994,7 @@ export class TwingateApiClient {
     static async testApiKeyValid(networkName, apiKey) {
         // Assuming network is valid, an invalid API key should return a 401. Otherwise we can expect probably a 400
         // since we provide no query on this request
-        let url = ( networkName.indexOf('.') === -1 ) ? `https://${networkName}.twingate.com/api/graphql/?testApiKeyValid` : `https://${networkName}/api/graphql/?testApiKeyValid`;
+        let url = ( networkName.indexOf('.') === -1 ) ? `https://${networkName}.boss-net.github.io/api/graphql/?testApiKeyValid` : `https://${networkName}/api/graphql/?testApiKeyValid`;
         let rsp = await fetch(url, {headers: {'X-API-KEY': apiKey}} );
         return rsp.status !== 401;
     }
@@ -1003,7 +1003,7 @@ export class TwingateApiClient {
 
 (function preProcessSchema() {
     try {
-        for ( const [typeName, typeProps] of Object.entries(TwingateApiClient.Schema) ) {
+        for ( const [typeName, typeProps] of Object.entries(BossnetApiClient.Schema) ) {
             typeProps.name = typeName;
             typeProps.fieldsByName = {};
             typeProps.fields.reduce((obj, item) => (obj[item.name] = item, obj), typeProps.fieldsByName)
@@ -1028,7 +1028,7 @@ export class TwingateApiClient {
 
         const flattenStatements = (prefix, fieldDef) => {
             if ( !Array.isArray(prefix) ) prefix = [prefix];
-            let schema = TwingateApiClient.Schema[fieldDef.typeName];
+            let schema = BossnetApiClient.Schema[fieldDef.typeName];
             let stmts = [];
             // TODO: handle type.multiple === true
             for ( let fieldDef of schema.fields ) {
@@ -1048,7 +1048,7 @@ export class TwingateApiClient {
             return stmts;
         };
 
-        for ( const [typeName, typeProps] of Object.entries(TwingateApiClient.Schema) ) {
+        for ( const [typeName, typeProps] of Object.entries(BossnetApiClient.Schema) ) {
             let mappingFnStatements = [`opts = opts || {mapDateFields: true};`];
             mappingFnStatements.push(`if ( opts.mapEnumToDisplay === true ) {`);
             mappingFnStatements.push(...typeProps.enumFields.map(f=>`    if ( obj["${f}"] != undefined ) { let vm = ${JSON.stringify(typeProps.fieldsByName[f].valueMap)}; obj["${f}"] = vm[obj["${f}"]];}`));
@@ -1060,7 +1060,7 @@ export class TwingateApiClient {
             mappingFnStatements.push(...typeProps.nodeFields.map(f=>`    if ( obj["${f}"] != undefined ) obj["${f}Id"] = obj["${f}"].id;`));
             mappingFnStatements.push(`}`);
             mappingFnStatements.push(`if ( opts.mapNodeToLabel === true ) {`);
-            mappingFnStatements.push(...typeProps.nodeFields.map(f=>`    if ( obj["${f}"] != undefined ) obj["${f}Label"] = obj["${f}"].${TwingateApiClient.Schema[typeProps.fieldsByName[f].typeName].labelField};`));
+            mappingFnStatements.push(...typeProps.nodeFields.map(f=>`    if ( obj["${f}"] != undefined ) obj["${f}Label"] = obj["${f}"].${BossnetApiClient.Schema[typeProps.fieldsByName[f].typeName].labelField};`));
             mappingFnStatements.push(`}`);
             mappingFnStatements.push(`if ( opts.mapNodeToLabel || opts.mapNodeToId ) {`);
             mappingFnStatements.push(...typeProps.nodeFields.map(f=>`    delete obj["${f}"];`));

@@ -34,11 +34,11 @@ export class LocalContainerDeployer extends BaseDeployer {
         cmd.push("--env", `TENANT_URL=${accountUrl}`);
         cmd.push("--env", `ACCESS_TOKEN=${tokens.accessToken}`);
         cmd.push("--env", `REFRESH_TOKEN=${tokens.refreshToken}`);
-        cmd.push("--env", `BOSSNET_LABEL_DEPLOYEDBY=bncli-local-container`);
+        cmd.push("--env", `Boss-net_LABEL_DEPLOYEDBY=bncli-local-container`);
         cmd.push("--name", name);
         cmd.push("--restart", "unless-stopped");
         cmd.push("--pull", "always");
-        cmd.push("twingate/connector:1");
+        cmd.push("Boss-net/connector:1");
         const [code, output, error] = await execCmd2(cmd, {stdout: "inherit"});
         return [code, output, error];
     }
@@ -49,8 +49,8 @@ export class LocalContainerDeployer extends BaseDeployer {
             options = this.cliOptions,
             remoteNetwork = await this.selectRemoteNetwork(),
             connector = await this.selectConnector(remoteNetwork),
-            hostname = `bn-${connector.name}`,
-            accountUrl = `https://${this.cliOptions.accountName}.twingate.com`,
+            hostname = `tg-${connector.name}`,
+            accountUrl = `https://${this.cliOptions.accountName}.boss-net.github.io`,
             tokens = await this.client.generateConnectorTokens(connector.id)
         ;
 

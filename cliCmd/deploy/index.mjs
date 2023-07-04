@@ -13,7 +13,7 @@ import {deployCivoCommand} from "./civo.mjs";
 
 export const deployCmd = new Command()
     .option("-y, --assume-yes [boolean]", "Automatic yes to prompts; assume 'yes' as answer to all prompts", {global: true})
-    .description("Automatically deploy Bossnet Connectors to various clouds and platforms")
+    .description("Automatically deploy Boss-net Connectors to various clouds and platforms")
 // .command("terraform", deployTerraformCommand);
     .command("aws", deployAwsCommand)
     .command("az", deployAzCommand)

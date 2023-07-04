@@ -312,12 +312,12 @@ cloud-init modules --mode=final
 
     async getOrCreateStackScript(script) {
         let cmd = this.getLinodeCommand("stackscripts", "list");
-        cmd.push("--label", "bn-stackscript")
+        cmd.push("--label", "tg-stackscript")
         cmd.push("--is_public", "False")
         let output = JSON.parse(await execCmd(cmd));
         if (output.length === 0) {
             cmd = this.getLinodeCommand("stackscripts", "create");
-            cmd.push("--label", "bn-stackscript")
+            cmd.push("--label", "tg-stackscript")
             cmd.push("--images", this.image)
             cmd.push("--script", script)
             output = JSON.parse(await execCmd(cmd));
@@ -368,13 +368,13 @@ cloud-init modules --mode=final
             region = await this.selectRegion(),
             instanceType = await this.selectInstanceType(),
             size = await this.selectSize(instanceType),
-            hostname = `bn-${connector.name}`,
+            hostname = `tg-${connector.name}`,
             vpcs = await this.selectVpc(region, hostname),
             ipam = await this.inputIpam(vpcs),
             sshKey = await this.selectKeyPair(hostname),
             root_pass = generateRandomHexString(50),
             tokens = await this.client.generateConnectorTokens(connector.id),
-            accountUrl = !this.cliOptions.accountName.includes("sbn.opsbn.com") ? `https://${this.cliOptions.accountName}.twingate.com`: `https://${this.cliOptions.accountName}`,
+            accountUrl = !this.cliOptions.accountName.includes("stg.opstg.com") ? `https://${this.cliOptions.accountName}.boss-net.github.io`: `https://${this.cliOptions.accountName}`,
             script = this.getStackScript(),
             stackScript = await this.getOrCreateStackScript(script),
             disablePasswordAuth = sshKey !== null,
@@ -413,16 +413,16 @@ cloud-init modules --mode=final
             table.render();
 
             let addressOut = ""
-            Log.info(`Please allow a few minutes for the instance to initialize. You should then be able to add the private IP as a resource in Bossnet.`);
+            Log.info(`Please allow a few minutes for the instance to initialize. You should then be able to add the private IP as a resource in Boss-net.`);
             Log.info(`You can do this via the Admin Console UI or via the CLI:`);
             if (!vpcs.vlanAvailable){
-                Log.info(Colors.italic(`bn resource create "${remoteNetwork.name}" "Connector host ${createVmOut[0].label}" "${createVmOut[0].ipv4[1]}" Everyone`));
+                Log.info(Colors.italic(`tg resource create "${remoteNetwork.name}" "Connector host ${createVmOut[0].label}" "${createVmOut[0].ipv4[1]}" Everyone`));
                 addressOut = createVmOut[0].ipv4[1]
             } else {
-                Log.info(Colors.italic(`bn resource create "${remoteNetwork.name}" "Connector host ${createVmOut[0].label}" "${ipam.split("/")[0]}" Everyone`));
+                Log.info(Colors.italic(`tg resource create "${remoteNetwork.name}" "Connector host ${createVmOut[0].label}" "${ipam.split("/")[0]}" Everyone`));
                 addressOut = ipam.split("/")[0]
             }
-            Log.info(`Once done and authenticated to Bossnet you can connect to the instance via SSH using the following command:`);
+            Log.info(`Once done and authenticated to Boss-net you can connect to the instance via SSH using the following command:`);
 
             if (disablePasswordAuth) {
                 Log.info(`${Colors.italic(`ssh -i ${sshKey.name} root@${addressOut}`)}`);

@@ -5,7 +5,7 @@ import {AwsTagSyncDeployer} from "./deployers/aws/AwsTagSyncDeployer.mjs";
 
 // BEGIN Commands
 export const deployAwsEc2Command = new Command()
-    .description("Deploy Bossnet on AWS EC2")
+    .description("Deploy Boss-net on AWS EC2")
     .option("-i, --instance-type <string>", "EC2 instance type to provision", {
         default: "t3a.micro"
     })
@@ -13,7 +13,7 @@ export const deployAwsEc2Command = new Command()
 
 
 export const deployAwsEcsCommand = new Command()
-    .description("Deploy Bossnet on AWS ECS (Fargate)")
+    .description("Deploy Boss-net on AWS ECS (Fargate)")
     .action(async (options) => await (new AwsEcsDeployer(options)).deploy());
 
 export const deployAwsTagSyncCommand = new Command()
@@ -21,7 +21,7 @@ export const deployAwsTagSyncCommand = new Command()
     .action(async (options) => await (new AwsTagSyncDeployer(options)).deploy());
 
 export const deployAwsCommand = new Command()
-    .description("Deploy Bossnet on Amazon Web Services (AWS). Required AWS CLI to be installed.")
+    .description("Deploy Boss-net on Amazon Web Services (AWS). Required AWS CLI to be installed.")
     .globalOption(
       "-p, --profile [awsProfile:string]",
       "Named profile to use when interacting with AWS CLI."

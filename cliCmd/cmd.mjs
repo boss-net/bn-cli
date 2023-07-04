@@ -33,7 +33,7 @@ export function getTopLevelCommand(name) {
 
     let cmd = new Command()
         .arguments('')
-        .description(`Bossnet ${name}s`.replace("ys", "ies"))
+        .description(`Boss-net ${name}s`.replace("ys", "ies"))
         .command("list", getListCommand(name))
     ;
 

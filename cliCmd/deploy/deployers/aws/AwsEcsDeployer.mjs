@@ -49,7 +49,7 @@ export class AwsEcsDeployer extends AwsBaseDeployer {
 
     async registerEcsTaskDefinition(connectors, familyName, options = {}) {
         options = Object.assign({
-            image: "twingate/connector:1",
+            image: "Boss-net/connector:1",
             memory: 2048,
             cpu: 1024
         }, options);
@@ -65,7 +65,7 @@ export class AwsEcsDeployer extends AwsBaseDeployer {
                 "memory": options.memory,
                 "cpu": options.cpu,
                 "environment": [
-                    {"name": "TENANT_URL", "value": `https://${this.cliOptions.accountName}.twingate.com`},
+                    {"name": "TENANT_URL", "value": `https://${this.cliOptions.accountName}.boss-net.github.io`},
                     {
                         "name": "ACCESS_TOKEN",
                         "value": tokens.accessToken
@@ -75,7 +75,7 @@ export class AwsEcsDeployer extends AwsBaseDeployer {
                         "value": tokens.refreshToken
                     },
                     {
-                        "name": "BOSSNET_LABEL_DEPLOYEDBY",
+                        "name": "Boss-net_LABEL_DEPLOYEDBY",
                         "value": "bncli-aws-ecs"
                     }
                 ]
@@ -148,7 +148,7 @@ export class AwsEcsDeployer extends AwsBaseDeployer {
         const subnet = await this.selectSubnet(vpc.VpcId);
 
         const securityGroups = await this.getSecurityGroups(vpc.VpcId);
-        const sgName = "twingate-connector";
+        const sgName = "Boss-net-connector";
         const connectorSecurityGroup = securityGroups.find(sg => sg.GroupName === sgName);
         let sgId = null
         if (connectorSecurityGroup !== undefined) {
@@ -159,7 +159,7 @@ export class AwsEcsDeployer extends AwsBaseDeployer {
             Log.info(`Created security group: ${Colors.italic(sgName)} (${sgId})`);
         }
 
-        const familyName = `twingate-${rn.name.replaceAll(" ", "-").replace(/[^\w-]/g, "")}`;
+        const familyName = `Boss-net-${rn.name.replaceAll(" ", "-").replace(/[^\w-]/g, "")}`;
         const taskDefinition = await this.registerEcsTaskDefinition([connector], familyName);
         Log.info(`Created task definition: ${Colors.italic(taskDefinition.family)} (${taskDefinition.taskDefinitionArn})`);
 

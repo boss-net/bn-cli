@@ -20,7 +20,7 @@ export class AzureVmDeployer extends AzureBaseDeployer {
         const cmd = this.getAzureCommand("sshkey", "create");
         cmd.push("-n", keyName);
         cmd.push("-g", resourceGroupName);
-            cmd.push("--tags", "Service=twingate-connector");
+            cmd.push("--tags", "Service=Boss-net-connector");
         const [code, output, errors] = await execCmd2(cmd, {stdErrToArray: true});
         if ( code !== 0 ) {
             errors.forEach(Log.error);
@@ -48,7 +48,7 @@ export class AzureVmDeployer extends AzureBaseDeployer {
         });
         if ( useKeyPair === "SKIP" ) return null;
         else if ( useKeyPair === "NEW" ) {
-            const keyName = await Input.prompt({message: "Key name", default: "bn-connector"});
+            const keyName = await Input.prompt({message: "Key name", default: "tg-connector"});
             await this.createSshKey(keyName, resourceGroupName);
             return keyName;
         }
@@ -86,7 +86,7 @@ export class AzureVmDeployer extends AzureBaseDeployer {
             cmd.push("--ssh-key-name", keyName);
         }
         cmd.push("--subnet", subnetName);
-        cmd.push("--tags", "Service=twingate-connector");
+        cmd.push("--tags", "Service=Boss-net-connector");
         if ( assignPublicIp === false ) {
             cmd.push("--public-ip-address", "");
         }
@@ -97,7 +97,7 @@ export class AzureVmDeployer extends AzureBaseDeployer {
         cmd.push("--os-disk-delete-option", "Delete");
         //cmd.push("--ephemeral-os-disk");
         //cmd.push("--ephemeral-os-disk-placement", "CacheDisk");
-        cmd.push("--nsg", "twingate-connectorNSG");
+        cmd.push("--nsg", "Boss-net-connectorNSG");
         cmd.push("--nsg-rule", "NONE");
 
         const output = await execCmd(cmd);
@@ -118,9 +118,9 @@ export class AzureVmDeployer extends AzureBaseDeployer {
             keyName = await this.selectKeyPair(resourceGroup.name),
             assignPublicIp = subnet.natGateway == null,
             size = options.size || "Standard_B1ms",
-            hostname = `bn-${connector.name}`,
+            hostname = `tg-${connector.name}`,
             tokens = await this.client.generateConnectorTokens(connector.id),
-            accountUrl = `https://${this.cliOptions.accountName}.twingate.com`,
+            accountUrl = `https://${this.cliOptions.accountName}.boss-net.github.io`,
             cloudConfig = new ConnectorCloudInit()
                 .setStaticConfiguration(accountUrl, tokens, {LOG_ANALYTICS: "v1"})
                 .setDynamicLabels({
@@ -146,10 +146,10 @@ export class AzureVmDeployer extends AzureBaseDeployer {
         if ( instance.publicIpAddress !== "" ) table.push(["Public IP", instance.publicIpAddress]);
         table.render();
 
-        Log.info(`Please allow a few minutes for the instance to initialize. You should then be able to add the private IP as a resource in Bossnet.`);
+        Log.info(`Please allow a few minutes for the instance to initialize. You should then be able to add the private IP as a resource in Boss-net.`);
         Log.info(`You can do this via the Admin Console UI or via the CLI:`);
-        Log.info(Colors.italic(`bn resource create "${remoteNetwork.name}" "Connector host ${hostname}" "${instance.privateIpAddress}" Everyone`));
-        Log.info(`Once done and authenticated to Bossnet you can connect to the instance via SSH using the following command:`);
+        Log.info(Colors.italic(`tg resource create "${remoteNetwork.name}" "Connector host ${hostname}" "${instance.privateIpAddress}" Everyone`));
+        Log.info(`Once done and authenticated to Boss-net you can connect to the instance via SSH using the following command:`);
         Log.info(`${Colors.italic(`ssh ubuntu@${instance.privateIpAddress}`)}`);
 
 

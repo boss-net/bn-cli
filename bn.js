@@ -20,11 +20,11 @@ async function main(args) {
     const topLevelCommands = ["resource", "group", "user", "network", "connector", "device", "service", "policy"];
     const LogLevelType = new EnumType(Object.keys(LOG_LEVELS));
     let cmd = new Command()
-        .name("bn")
+        .name("tg")
         .version(`CLI Version: ${VERSION} | BossnetApiClient Version: ${BossnetApiClient.VERSION}`)
-        .description("CLI for Bossnet")
+        .description("CLI for Boss-net")
         .type("LogLevel", LogLevelType)
-        .option("-a, --account-name <string>", "Bossnet account name", {
+        .option("-a, --account-name <string>", "Boss-net account name", {
             global: true,
             default: Deno.env.get("TG_ACCOUNT")
         })
@@ -35,7 +35,7 @@ async function main(args) {
             action: (options) => Deno.env.set("LOG_LEVEL", options.logLevel)
         })
         .action(async (options) => {
-            Log.success(`This is the Bossnet CLI tool, ${Colors.italic('bn')}`);
+            Log.success(`This is the Boss-net CLI tool, ${Colors.italic('tg')}`);
 `  __          
 _/  |_  ____  
 \\   __\\/ ___\\ 
@@ -44,10 +44,10 @@ _/  |_  ____
      /_____/  
 `.split("\n").map(Log.info);
             Log.info(`No parameters specified, please try:`);
-            Log.info(Colors.italic(`bn --help`));
+            Log.info(Colors.italic(`tg --help`));
             Log.info(`For a list of possible commands.`);
             Log.info("");
-            Log.info(`For assistance with this tool please visit https://github.com/twingate-labs/bn-cli`);
+            Log.info(`For assistance with this tool please visit https://github.com/Boss-net/bn-cli`);
             return 0;
         })
         .command("export", exportCmd)
