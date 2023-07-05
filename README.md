@@ -22,7 +22,7 @@ Linux
 * Open Linux Terminal
 * Test
   *  ```/path/to/bn --help``` e.g. ```/apps/bn --help``` or 
-  *  ```cd \path\to\tg``` followed by ```./bn --help```
+  *  ```cd \path\to\bn``` followed by ```./bn --help```
 
 
 Mac
@@ -32,7 +32,7 @@ Mac
 * Execute ```chmod +x /path/to/bn``` to make the app executable.
 * Test
   *  ```/path/to/bn --help``` e.g. ```/apps/bn --help``` or 
-  *  ```cd \path\to\tg``` followed by ```./bn --help```
+  *  ```cd \path\to\bn``` followed by ```./bn --help```
 
 Compiling from source
 ===========================
