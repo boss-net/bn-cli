@@ -49,7 +49,7 @@ export class LocalContainerDeployer extends BaseDeployer {
             options = this.cliOptions,
             remoteNetwork = await this.selectRemoteNetwork(),
             connector = await this.selectConnector(remoteNetwork),
-            hostname = `tg-${connector.name}`,
+            hostname = `bn-${connector.name}`,
             accountUrl = `https://${this.cliOptions.accountName}.boss-net.github.io`,
             tokens = await this.client.generateConnectorTokens(connector.id)
         ;

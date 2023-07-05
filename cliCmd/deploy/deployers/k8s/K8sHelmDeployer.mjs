@@ -118,7 +118,7 @@ export class K8sHelmDeployer extends BaseDeployer {
     }
 
     async installHelmChart(connector, tokens, context) {
-        const releaseName = `tg-${connector.name}`;
+        const releaseName = `bn-${connector.name}`;
         Log.info(`Installing helm release '${releaseName}'...`);
         const subCommand = [releaseName, "Boss-net/connector", "--install"];
         subCommand.push("--kube-context", context.name);

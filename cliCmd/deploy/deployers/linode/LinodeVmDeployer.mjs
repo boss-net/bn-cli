@@ -312,12 +312,12 @@ cloud-init modules --mode=final
 
     async getOrCreateStackScript(script) {
         let cmd = this.getLinodeCommand("stackscripts", "list");
-        cmd.push("--label", "tg-stackscript")
+        cmd.push("--label", "bn-stackscript")
         cmd.push("--is_public", "False")
         let output = JSON.parse(await execCmd(cmd));
         if (output.length === 0) {
             cmd = this.getLinodeCommand("stackscripts", "create");
-            cmd.push("--label", "tg-stackscript")
+            cmd.push("--label", "bn-stackscript")
             cmd.push("--images", this.image)
             cmd.push("--script", script)
             output = JSON.parse(await execCmd(cmd));
@@ -368,7 +368,7 @@ cloud-init modules --mode=final
             region = await this.selectRegion(),
             instanceType = await this.selectInstanceType(),
             size = await this.selectSize(instanceType),
-            hostname = `tg-${connector.name}`,
+            hostname = `bn-${connector.name}`,
             vpcs = await this.selectVpc(region, hostname),
             ipam = await this.inputIpam(vpcs),
             sshKey = await this.selectKeyPair(hostname),

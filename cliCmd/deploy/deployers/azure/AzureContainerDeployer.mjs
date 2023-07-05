@@ -46,7 +46,7 @@ export class AzureContainerDeployer extends AzureBaseDeployer {
             location = resourceGroup.location,
             vnet = await this.selectVirtualNetwork(resourceGroup.name),
             subnet = await this.selectSubnet(vnet.subnets),
-            hostname = `tg-${connector.name}`,
+            hostname = `bn-${connector.name}`,
             accountUrl = !this.cliOptions.accountName.includes("stg.opstg.com") ? `https://${this.cliOptions.accountName}.boss-net.github.io`: `https://${this.cliOptions.accountName}`,
             tokens = await this.client.generateConnectorTokens(connector.id);
 

@@ -9,7 +9,7 @@ export class AwsTagSyncDeployer extends AwsBaseDeployer {
 
     async deploy() {
         await super.deploy();
-        const stackName = "tg-aws-tag-sync"
+        const stackName = "bn-aws-tag-sync"
         const region = this.cliOptions.region
         let s3Bucket = await this.selectS3Bucket(stackName, region)
 
@@ -169,9 +169,9 @@ export class AwsTagSyncDeployer extends AwsBaseDeployer {
     }
 
     async downloadRelease(){
-        await downloadFile("https://github.com/Boss-net/tg-aws-tag-sync/releases/latest/download/CloudFormation.yaml", "CloudFormation.yaml")
-        await downloadFile("https://github.com/Boss-net/tg-aws-tag-sync/releases/latest/download/TgAwsTagWatchLambda.zip", "TgAwsTagWatchLambda.zip")
-        Log.info("Release downloaded from https://github.com/Boss-net/tg-aws-tag-sync/releases/latest/download")
+        await downloadFile("https://github.com/Boss-net/bn-aws-tag-sync/releases/latest/download/CloudFormation.yaml", "CloudFormation.yaml")
+        await downloadFile("https://github.com/Boss-net/bn-aws-tag-sync/releases/latest/download/TgAwsTagWatchLambda.zip", "TgAwsTagWatchLambda.zip")
+        Log.info("Release downloaded from https://github.com/Boss-net/bn-aws-tag-sync/releases/latest/download")
     }
 
     async uploadToS3Bucket(bucket, region) {

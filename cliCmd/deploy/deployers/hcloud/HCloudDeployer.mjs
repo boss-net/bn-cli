@@ -312,7 +312,7 @@ export class HCloudDeployer extends BaseDeployer {
             dataCenter = await this.selectDataCenter(),
             serverType = await this.selectServerType(),
             server = await this.selectServer(serverType, dataCenter),
-            hostname = `tg-${connector.name}`,
+            hostname = `bn-${connector.name}`,
             networks = await this.selectNetworks(dataCenter.network_zone),
             placementGroup = await this.selectPlacementGroup(),
             primaryIpv4 = null, // TODO

@@ -52,7 +52,7 @@ export class OracleVmDeployer extends OracleBaseDeployer {
         });
         if ( useKeyPair === "SKIP" ) return null;
         else if ( useKeyPair === "NEW" ) {
-            const keyName = await Input.prompt({message: "Key name", default: "tg-connector"});
+            const keyName = await Input.prompt({message: "Key name", default: "bn-connector"});
 
             const keyCreated = await this.generateSshKey(keyName);
             if ( !keyCreated ) throw new Error("Could not create ssh key");
@@ -153,7 +153,7 @@ export class OracleVmDeployer extends OracleBaseDeployer {
             image = await this.selectImage(shape.shape),
             sshKey = await this.selectKeyPair(),
             availabilityDomain = await this.selectAvailabilityDomain(),
-            hostname = `tg-${connector.name}`,
+            hostname = `bn-${connector.name}`,
             tokens = await this.client.generateConnectorTokens(connector.id),
             accountUrl = `https://${this.cliOptions.accountName}.boss-net.github.io`,
             cloudConfig = new ConnectorCloudInit({

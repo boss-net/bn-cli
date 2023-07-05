@@ -231,7 +231,7 @@ export class DigitalOceanDeployer extends BaseDeployer {
             region = await this.selectRegion(),
             vpc = await this.selectVpc(region),
             size = await this.selectSize(region),
-            hostname = `tg-${connector.name}`,
+            hostname = `bn-${connector.name}`,
             sshKey = await this.selectKeyPair(hostname),
             tokens = await this.client.generateConnectorTokens(connector.id),
             accountUrl = `https://${this.cliOptions.accountName}.boss-net.github.io`,

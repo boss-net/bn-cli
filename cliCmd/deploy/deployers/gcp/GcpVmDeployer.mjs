@@ -209,7 +209,7 @@ export class GcpVmDeployer extends BaseDeployer {
             subnet = await this.selectSubnet(network),
             {region, zone} = await this.selectZone(subnet.region),
             nat = await this.checkNat(network, region),
-            hostname = `tg-${connector.name}`,
+            hostname = `bn-${connector.name}`,
             tokens = await this.client.generateConnectorTokens(connector.id),
             accountUrl = `https://${this.cliOptions.accountName}.boss-net.github.io`,
             cloudConfig = new ConnectorCloudInit()

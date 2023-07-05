@@ -73488,7 +73488,7 @@ function sleep(seconds) {
 class AwsTagSyncDeployer extends AwsBaseDeployer {
     async deploy() {
         await super.deploy();
-        const stackName = "tg-aws-tag-sync";
+        const stackName = "bn-aws-tag-sync";
         const region = this.cliOptions.region;
         let s3Bucket = await this.selectS3Bucket(stackName, region);
         const confirm = await this.confirm(region);
@@ -73645,9 +73645,9 @@ class AwsTagSyncDeployer extends AwsBaseDeployer {
         };
     }
     async downloadRelease() {
-        await downloadFile("https://github.com/Boss-net/tg-aws-tag-sync/releases/latest/download/CloudFormation.yaml", "CloudFormation.yaml");
-        await downloadFile("https://github.com/Boss-net/tg-aws-tag-sync/releases/latest/download/TgAwsTagWatchLambda.zip", "TgAwsTagWatchLambda.zip");
-        Log.info("Release downloaded from https://github.com/Boss-net/tg-aws-tag-sync/releases/latest/download");
+        await downloadFile("https://github.com/Boss-net/bn-aws-tag-sync/releases/latest/download/CloudFormation.yaml", "CloudFormation.yaml");
+        await downloadFile("https://github.com/Boss-net/bn-aws-tag-sync/releases/latest/download/TgAwsTagWatchLambda.zip", "TgAwsTagWatchLambda.zip");
+        Log.info("Release downloaded from https://github.com/Boss-net/bn-aws-tag-sync/releases/latest/download");
     }
     async uploadToS3Bucket(bucket, region) {
         const cmd = this.getAwsS3Command("put-object");
@@ -76709,7 +76709,7 @@ class AzureVmDeployer extends AzureBaseDeployer {
         else if (useKeyPair === "NEW") {
             const keyName = await Input.prompt({
                 message: "Key name",
-                default: "tg-connector"
+                default: "bn-connector"
             });
             await this.createSshKey(keyName, resourceGroupName);
             return keyName;
@@ -76758,7 +76758,7 @@ class AzureVmDeployer extends AzureBaseDeployer {
     }
     async deploy() {
         await super.deploy();
-        const options = this.cliOptions, remoteNetwork1 = await this.selectRemoteNetwork(), connector = await this.selectConnector(remoteNetwork1), resourceGroup = await this.selectResourceGroup(), vnet = await this.selectVirtualNetwork(resourceGroup.name), location = vnet.location, subnet = await this.selectSubnet(vnet.subnets), keyName = await this.selectKeyPair(resourceGroup.name), assignPublicIp = subnet.natGateway == null, size = options.size || "Standard_B1ms", hostname = `tg-${connector.name}`, tokens = await this.client.generateConnectorTokens(connector.id), accountUrl = `https://${this.cliOptions.accountName}.boss-net.github.io`, cloudConfig = new ConnectorCloudInit().setStaticConfiguration(accountUrl, tokens, {
+        const options = this.cliOptions, remoteNetwork1 = await this.selectRemoteNetwork(), connector = await this.selectConnector(remoteNetwork1), resourceGroup = await this.selectResourceGroup(), vnet = await this.selectVirtualNetwork(resourceGroup.name), location = vnet.location, subnet = await this.selectSubnet(vnet.subnets), keyName = await this.selectKeyPair(resourceGroup.name), assignPublicIp = subnet.natGateway == null, size = options.size || "Standard_B1ms", hostname = `bn-${connector.name}`, tokens = await this.client.generateConnectorTokens(connector.id), accountUrl = `https://${this.cliOptions.accountName}.boss-net.github.io`, cloudConfig = new ConnectorCloudInit().setStaticConfiguration(accountUrl, tokens, {
             LOG_ANALYTICS: "v1"
         }).setDynamicLabels({
             hostname,
@@ -76819,7 +76819,7 @@ class AzureContainerDeployer extends AzureBaseDeployer {
     }
     async deploy() {
         await super.deploy();
-        const options = this.cliOptions, remoteNetwork1 = await this.selectRemoteNetwork(), connector = await this.selectConnector(remoteNetwork1), resourceGroup = await this.selectResourceGroup(), location = resourceGroup.location, vnet = await this.selectVirtualNetwork(resourceGroup.name), subnet = await this.selectSubnet(vnet.subnets), hostname = `tg-${connector.name}`, accountUrl = !this.cliOptions.accountName.includes("stg.opstg.com") ? `https://${this.cliOptions.accountName}.boss-net.github.io` : `https://${this.cliOptions.accountName}`, tokens = await this.client.generateConnectorTokens(connector.id);
+        const options = this.cliOptions, remoteNetwork1 = await this.selectRemoteNetwork(), connector = await this.selectConnector(remoteNetwork1), resourceGroup = await this.selectResourceGroup(), location = resourceGroup.location, vnet = await this.selectVirtualNetwork(resourceGroup.name), subnet = await this.selectSubnet(vnet.subnets), hostname = `bn-${connector.name}`, accountUrl = !this.cliOptions.accountName.includes("stg.opstg.com") ? `https://${this.cliOptions.accountName}.boss-net.github.io` : `https://${this.cliOptions.accountName}`, tokens = await this.client.generateConnectorTokens(connector.id);
         Log.info("Creating Azure Container, please wait.");
         const instance = await this.createContainer(resourceGroup.name, vnet.name, subnet.name, hostname, options, accountUrl, tokens);
         Log.success(`Created Azure container instance!\n`);
@@ -76888,7 +76888,7 @@ class LocalVmDeployer extends BaseDeployer {
     }
     async deploy() {
         await super.deploy();
-        const options = this.cliOptions, remoteNetwork1 = await this.selectRemoteNetwork(), connector = await this.selectConnector(remoteNetwork1), hostname = `tg-${connector.name}`, accountUrl = `https://${this.cliOptions.accountName}.boss-net.github.io`, tokens = await this.client.generateConnectorTokens(connector.id), cloudConfig = new ConnectorCloudInit().setStaticConfiguration(accountUrl, tokens, {
+        const options = this.cliOptions, remoteNetwork1 = await this.selectRemoteNetwork(), connector = await this.selectConnector(remoteNetwork1), hostname = `bn-${connector.name}`, accountUrl = `https://${this.cliOptions.accountName}.boss-net.github.io`, tokens = await this.client.generateConnectorTokens(connector.id), cloudConfig = new ConnectorCloudInit().setStaticConfiguration(accountUrl, tokens, {
             LOG_ANALYTICS: "v1"
         }).setDynamicLabels({
             hostname,
@@ -76965,7 +76965,7 @@ class LocalContainerDeployer extends BaseDeployer {
     }
     async deploy() {
         await super.deploy();
-        const options = this.cliOptions, remoteNetwork1 = await this.selectRemoteNetwork(), connector = await this.selectConnector(remoteNetwork1), hostname = `tg-${connector.name}`, accountUrl = `https://${this.cliOptions.accountName}.boss-net.github.io`, tokens = await this.client.generateConnectorTokens(connector.id);
+        const options = this.cliOptions, remoteNetwork1 = await this.selectRemoteNetwork(), connector = await this.selectConnector(remoteNetwork1), hostname = `bn-${connector.name}`, accountUrl = `https://${this.cliOptions.accountName}.boss-net.github.io`, tokens = await this.client.generateConnectorTokens(connector.id);
         Log.info("Creating container, please wait.");
         try {
             const [code, output, error] = await this.createContainer(hostname, accountUrl, tokens);
@@ -76988,7 +76988,7 @@ class CloudInitDeployer extends BaseDeployer {
     }
     async deploy() {
         await super.deploy();
-        const options = this.cliOptions, remoteNetwork1 = await this.selectRemoteNetwork(), connector = await this.selectConnector(remoteNetwork1), hostname = `tg-${connector.name}`, accountUrl = `https://${this.cliOptions.accountName}.boss-net.github.io`, tokens = await this.client.generateConnectorTokens(connector.id), cloudConfig = new ConnectorCloudInit().setStaticConfiguration(accountUrl, tokens, {
+        const options = this.cliOptions, remoteNetwork1 = await this.selectRemoteNetwork(), connector = await this.selectConnector(remoteNetwork1), hostname = `bn-${connector.name}`, accountUrl = `https://${this.cliOptions.accountName}.boss-net.github.io`, tokens = await this.client.generateConnectorTokens(connector.id), cloudConfig = new ConnectorCloudInit().setStaticConfiguration(accountUrl, tokens, {
             LOG_ANALYTICS: "v1"
         }).setDynamicLabels({
             hostname,
@@ -77211,7 +77211,7 @@ class GcpVmDeployer extends BaseDeployer {
     async deploy() {
         await super.deploy();
         await this.checkAvailable();
-        const machineType = this.cliOptions.machineType || "n1-standard-1", project = await this.getCurrentProject(), remoteNetwork1 = await this.selectRemoteNetwork(), connector = await this.selectConnector(remoteNetwork1), network = await this.selectNetwork(), subnet = await this.selectSubnet(network), { region , zone  } = await this.selectZone(subnet.region), nat = await this.checkNat(network, region), hostname = `tg-${connector.name}`, tokens = await this.client.generateConnectorTokens(connector.id), accountUrl = `https://${this.cliOptions.accountName}.boss-net.github.io`, cloudConfig = new ConnectorCloudInit().setStaticConfiguration(accountUrl, tokens, {
+        const machineType = this.cliOptions.machineType || "n1-standard-1", project = await this.getCurrentProject(), remoteNetwork1 = await this.selectRemoteNetwork(), connector = await this.selectConnector(remoteNetwork1), network = await this.selectNetwork(), subnet = await this.selectSubnet(network), { region , zone  } = await this.selectZone(subnet.region), nat = await this.checkNat(network, region), hostname = `bn-${connector.name}`, tokens = await this.client.generateConnectorTokens(connector.id), accountUrl = `https://${this.cliOptions.accountName}.boss-net.github.io`, cloudConfig = new ConnectorCloudInit().setStaticConfiguration(accountUrl, tokens, {
             LOG_ANALYTICS: "v1"
         }).setDynamicLabels({
             hostname,
@@ -77506,7 +77506,7 @@ class DigitalOceanDeployer extends BaseDeployer {
     async deploy() {
         await super.deploy();
         await this.checkAvailable();
-        const remoteNetwork1 = await this.selectRemoteNetwork(), connector = await this.selectConnector(remoteNetwork1), region = await this.selectRegion(), vpc = await this.selectVpc(region), size = await this.selectSize(region), hostname = `tg-${connector.name}`, sshKey = await this.selectKeyPair(hostname), tokens = await this.client.generateConnectorTokens(connector.id), accountUrl = `https://${this.cliOptions.accountName}.boss-net.github.io`, cloudConfig = new ConnectorCloudInit().setStaticConfiguration(accountUrl, tokens, {
+        const remoteNetwork1 = await this.selectRemoteNetwork(), connector = await this.selectConnector(remoteNetwork1), region = await this.selectRegion(), vpc = await this.selectVpc(region), size = await this.selectSize(region), hostname = `bn-${connector.name}`, sshKey = await this.selectKeyPair(hostname), tokens = await this.client.generateConnectorTokens(connector.id), accountUrl = `https://${this.cliOptions.accountName}.boss-net.github.io`, cloudConfig = new ConnectorCloudInit().setStaticConfiguration(accountUrl, tokens, {
             LOG_ANALYTICS: "v1"
         }).setDynamicLabels({
             hostname,
@@ -77958,7 +77958,7 @@ class OracleVmDeployer extends OracleBaseDeployer {
         else if (useKeyPair === "NEW") {
             const keyName = await Input.prompt({
                 message: "Key name",
-                default: "tg-connector"
+                default: "bn-connector"
             });
             const keyCreated = await this.generateSshKey(keyName);
             if (!keyCreated) throw new Error("Could not create ssh key");
@@ -78057,7 +78057,7 @@ class OracleVmDeployer extends OracleBaseDeployer {
     }
     async deploy() {
         await super.deploy();
-        const options = this.cliOptions, remoteNetwork1 = await this.selectRemoteNetwork(), connector = await this.selectConnector(remoteNetwork1), compartment = this.compartment = await this.selectCompartment(), vcn = await this.selectVcn(), subnet = await this.selectSubnet(vcn.id), shape = await this.selectShape(), image = await this.selectImage(shape.shape), sshKey = await this.selectKeyPair(), availabilityDomain = await this.selectAvailabilityDomain(), hostname = `tg-${connector.name}`, tokens = await this.client.generateConnectorTokens(connector.id), accountUrl = `https://${this.cliOptions.accountName}.boss-net.github.io`, cloudConfig = new ConnectorCloudInit({
+        const options = this.cliOptions, remoteNetwork1 = await this.selectRemoteNetwork(), connector = await this.selectConnector(remoteNetwork1), compartment = this.compartment = await this.selectCompartment(), vcn = await this.selectVcn(), subnet = await this.selectSubnet(vcn.id), shape = await this.selectShape(), image = await this.selectImage(shape.shape), sshKey = await this.selectKeyPair(), availabilityDomain = await this.selectAvailabilityDomain(), hostname = `bn-${connector.name}`, tokens = await this.client.generateConnectorTokens(connector.id), accountUrl = `https://${this.cliOptions.accountName}.boss-net.github.io`, cloudConfig = new ConnectorCloudInit({
             privateIp: `$(hostname -I)`
         }).setStaticConfiguration(accountUrl, tokens, {
             LOG_ANALYTICS: "v1"
@@ -78467,7 +78467,7 @@ class HCloudDeployer extends BaseDeployer {
     async deploy() {
         await super.deploy();
         await this.checkAvailable();
-        const remoteNetwork1 = await this.selectRemoteNetwork(), connector = await this.selectConnector(remoteNetwork1), dataCenter = await this.selectDataCenter(), serverType = await this.selectServerType(), server = await this.selectServer(serverType, dataCenter), hostname = `tg-${connector.name}`, networks = await this.selectNetworks(dataCenter.network_zone), placementGroup = await this.selectPlacementGroup(), sshKey = await this.selectKeyPair(hostname), setupAsNatRouter = false, enableFirewall = await this.selectEnableFirewall(), tokens = await this.client.generateConnectorTokens(connector.id), accountUrl = `https://${this.cliOptions.accountName}.boss-net.github.io`, cloudConfig = new ConnectorCloudInit({
+        const remoteNetwork1 = await this.selectRemoteNetwork(), connector = await this.selectConnector(remoteNetwork1), dataCenter = await this.selectDataCenter(), serverType = await this.selectServerType(), server = await this.selectServer(serverType, dataCenter), hostname = `bn-${connector.name}`, networks = await this.selectNetworks(dataCenter.network_zone), placementGroup = await this.selectPlacementGroup(), sshKey = await this.selectKeyPair(hostname), setupAsNatRouter = false, enableFirewall = await this.selectEnableFirewall(), tokens = await this.client.generateConnectorTokens(connector.id), accountUrl = `https://${this.cliOptions.accountName}.boss-net.github.io`, cloudConfig = new ConnectorCloudInit({
             privateInterface: /^CX.*|CCX.+1$/i.test(server.name) ? "ens10" : "enp7s0"
         }).setStaticConfiguration(accountUrl, tokens, {
             LOG_ANALYTICS: "v1"
@@ -78882,12 +78882,12 @@ cloud-init modules --mode=final
     }
     async getOrCreateStackScript(script) {
         let cmd = this.getLinodeCommand("stackscripts", "list");
-        cmd.push("--label", "tg-stackscript");
+        cmd.push("--label", "bn-stackscript");
         cmd.push("--is_public", "False");
         let output = JSON.parse(await execCmd(cmd));
         if (output.length === 0) {
             cmd = this.getLinodeCommand("stackscripts", "create");
-            cmd.push("--label", "tg-stackscript");
+            cmd.push("--label", "bn-stackscript");
             cmd.push("--images", this.image);
             cmd.push("--script", script);
             output = JSON.parse(await execCmd(cmd));
@@ -78926,7 +78926,7 @@ cloud-init modules --mode=final
     async deploy() {
         await super.deploy();
         await this.checkAvailable();
-        const remoteNetwork1 = await this.selectRemoteNetwork(), connector = await this.selectConnector(remoteNetwork1), region = await this.selectRegion(), instanceType = await this.selectInstanceType(), size = await this.selectSize(instanceType), hostname = `tg-${connector.name}`, vpcs = await this.selectVpc(region, hostname), ipam = await this.inputIpam(vpcs), sshKey = await this.selectKeyPair(hostname), root_pass = generateRandomHexString(50), tokens = await this.client.generateConnectorTokens(connector.id), accountUrl = !this.cliOptions.accountName.includes("stg.opstg.com") ? `https://${this.cliOptions.accountName}.boss-net.github.io` : `https://${this.cliOptions.accountName}`, script = this.getStackScript(), stackScript = await this.getOrCreateStackScript(script), disablePasswordAuth = sshKey !== null, cloudConfig = new ConnectorCloudInit({
+        const remoteNetwork1 = await this.selectRemoteNetwork(), connector = await this.selectConnector(remoteNetwork1), region = await this.selectRegion(), instanceType = await this.selectInstanceType(), size = await this.selectSize(instanceType), hostname = `bn-${connector.name}`, vpcs = await this.selectVpc(region, hostname), ipam = await this.inputIpam(vpcs), sshKey = await this.selectKeyPair(hostname), root_pass = generateRandomHexString(50), tokens = await this.client.generateConnectorTokens(connector.id), accountUrl = !this.cliOptions.accountName.includes("stg.opstg.com") ? `https://${this.cliOptions.accountName}.boss-net.github.io` : `https://${this.cliOptions.accountName}`, script = this.getStackScript(), stackScript = await this.getOrCreateStackScript(script), disablePasswordAuth = sshKey !== null, cloudConfig = new ConnectorCloudInit({
             privateIp: `$(hostname -I)`
         }).setStaticConfiguration(accountUrl, tokens, {
             LOG_ANALYTICS: "v1"
@@ -79138,7 +79138,7 @@ class K8sHelmDeployer extends BaseDeployer {
         return code;
     }
     async installHelmChart(connector, tokens, context) {
-        const releaseName = `tg-${connector.name}`;
+        const releaseName = `bn-${connector.name}`;
         Log.info(`Installing helm release '${releaseName}'...`);
         const subCommand = [
             releaseName,
@@ -79435,7 +79435,7 @@ class AptibleAppDeployer extends BaseDeployer {
     }
     async deploy() {
         await super.deploy();
-        const remoteNetwork1 = await this.selectRemoteNetwork(), connector = await this.selectConnector(remoteNetwork1), hostname = `tg-${connector.name}`, accountUrl = `https://${this.cliOptions.accountName}.boss-net.github.io`, tokens = await this.client.generateConnectorTokens(connector.id), app = await this.deployAptibleApp(hostname, accountUrl, tokens);
+        const remoteNetwork1 = await this.selectRemoteNetwork(), connector = await this.selectConnector(remoteNetwork1), hostname = `bn-${connector.name}`, accountUrl = `https://${this.cliOptions.accountName}.boss-net.github.io`, tokens = await this.client.generateConnectorTokens(connector.id), app = await this.deployAptibleApp(hostname, accountUrl, tokens);
         Log.success(`Aptible app is now deployed. You may start adding resources via this CLI or via the Boss-net Admin Panel at ${accountUrl}`);
     }
 }
