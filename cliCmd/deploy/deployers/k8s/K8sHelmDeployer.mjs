@@ -270,7 +270,7 @@ export class K8sHelmDeployer extends BaseDeployer {
                 case "resources_only":
                     for (const resource of resources ) {
                         Log.info(`Creating resource: ${resource.name}...`);
-                        resource.tg_resource = await this.client.createResource(resource.name, resource.address, remoteNetwork.id, resource.protocols, resource.groupIds);
+                        resource.bn_resource = await this.client.createResource(resource.name, resource.address, remoteNetwork.id, resource.protocols, resource.groupIds);
                     }
                     break;
                 case "no":

@@ -148,7 +148,7 @@ export class AzureVmDeployer extends AzureBaseDeployer {
 
         Log.info(`Please allow a few minutes for the instance to initialize. You should then be able to add the private IP as a resource in Boss-net.`);
         Log.info(`You can do this via the Admin Console UI or via the CLI:`);
-        Log.info(Colors.italic(`tg resource create "${remoteNetwork.name}" "Connector host ${hostname}" "${instance.privateIpAddress}" Everyone`));
+        Log.info(Colors.italic(`bn resource create "${remoteNetwork.name}" "Connector host ${hostname}" "${instance.privateIpAddress}" Everyone`));
         Log.info(`Once done and authenticated to Boss-net you can connect to the instance via SSH using the following command:`);
         Log.info(`${Colors.italic(`ssh ubuntu@${instance.privateIpAddress}`)}`);
 

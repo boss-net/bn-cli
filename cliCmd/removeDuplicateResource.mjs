@@ -21,7 +21,7 @@ function objectSearch(array, key){
 /**
  * used to remove duplcate resource using key
  * ${remoteNetworkLabel}-${addressValue}-${protocolsAllowIcmp}-${protocolsTcpPolicy}-${protocolsTcpPorts}-${remoteNetworkLabel}-${protocolsUdpPolicy}
- * from the tg export
+ * from the bn export
  */
 export const removeDuplicateResourceCmd = new Command()
     .option("-f, --file <string>", "Path to Excel file to find from", {

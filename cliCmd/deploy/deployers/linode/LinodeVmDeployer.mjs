@@ -416,10 +416,10 @@ cloud-init modules --mode=final
             Log.info(`Please allow a few minutes for the instance to initialize. You should then be able to add the private IP as a resource in Boss-net.`);
             Log.info(`You can do this via the Admin Console UI or via the CLI:`);
             if (!vpcs.vlanAvailable){
-                Log.info(Colors.italic(`tg resource create "${remoteNetwork.name}" "Connector host ${createVmOut[0].label}" "${createVmOut[0].ipv4[1]}" Everyone`));
+                Log.info(Colors.italic(`bn resource create "${remoteNetwork.name}" "Connector host ${createVmOut[0].label}" "${createVmOut[0].ipv4[1]}" Everyone`));
                 addressOut = createVmOut[0].ipv4[1]
             } else {
-                Log.info(Colors.italic(`tg resource create "${remoteNetwork.name}" "Connector host ${createVmOut[0].label}" "${ipam.split("/")[0]}" Everyone`));
+                Log.info(Colors.italic(`bn resource create "${remoteNetwork.name}" "Connector host ${createVmOut[0].label}" "${ipam.split("/")[0]}" Everyone`));
                 addressOut = ipam.split("/")[0]
             }
             Log.info(`Once done and authenticated to Boss-net you can connect to the instance via SSH using the following command:`);

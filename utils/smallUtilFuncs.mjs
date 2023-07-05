@@ -23,7 +23,7 @@ export function genFileNameFromNetworkName(networkName, extension = "xlsx") {
 
 export async function loadClientForCLI(options) {
     const {networkName, apiKey} = await loadNetworkAndApiKey(options.accountName);
-    const app = Deno.env.get("TG_APPLICATION") || 'bn-cli';
+    const app = Deno.env.get("BN_APPLICATION") || 'bn-cli';
     const applicationName = `${app}/${VERSION}`
     const client = new BossnetApiClient(networkName, apiKey, {
         logger: Log,
@@ -33,13 +33,13 @@ export async function loadClientForCLI(options) {
 }
 
 export async function loadNetworkAndApiKey(networkName = null) {
-    let apiKey = Deno.env.get("TG_API_KEY"),
+    let apiKey = Deno.env.get("BN_API_KEY"),
         saveConfig = false,
         keyConf = {},
         availableNetworks = [];
     const
         confirmMultipleNetworks = networkName == null,
-        keyFile = ".tgkeys",
+        keyFile = ".bnkeys",
         keyFilePath = `./${keyFile}`,
         networkNamePrompt = {
             name: "networkName", message: `Enter Boss-net account:`,
@@ -114,7 +114,7 @@ export async function loadExternalKey(type, env = null) {
         return [key, false];
     }
     const
-        keyFile = ".tgkeys",
+        keyFile = ".bnkeys",
         keyFilePath = `./${keyFile}`
     ;
 

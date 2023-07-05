@@ -21,18 +21,18 @@ Linux
 ===========================
 * Open Linux Terminal
 * Test
-  *  ```/path/to/tg --help``` e.g. ```/apps/tg --help``` or 
-  *  ```cd \path\to\tg``` followed by ```./tg --help```
+  *  ```/path/to/bn --help``` e.g. ```/apps/bn --help``` or 
+  *  ```cd \path\to\tg``` followed by ```./bn --help```
 
 
 Mac
 ===========================
 * Open Mac Terminal
-* Execute ```xattr -d com.apple.quarantine /path/to/tg``` to remove the quarantine bit.
-* Execute ```chmod +x /path/to/tg``` to make the app executable.
+* Execute ```xattr -d com.apple.quarantine /path/to/bn``` to remove the quarantine bit.
+* Execute ```chmod +x /path/to/bn``` to make the app executable.
 * Test
-  *  ```/path/to/tg --help``` e.g. ```/apps/tg --help``` or 
-  *  ```cd \path\to\tg``` followed by ```./tg --help```
+  *  ```/path/to/bn --help``` e.g. ```/apps/bn --help``` or 
+  *  ```cd \path\to\tg``` followed by ```./bn --help```
 
 Compiling from source
 ===========================
@@ -40,37 +40,37 @@ Compiling from source
 * Execute the commands below
 ```
 deno bundle --unstable --import-map ./import_map.json ./bn.js ./bn.bundle.js
-deno compile --allow-all --unstable --target x86_64-unknown-linux-gnu --output ./tg ./bn.bundle.js &
+deno compile --allow-all --unstable --target x86_64-unknown-linux-gnu --output ./bn ./bn.bundle.js &
 ```
 
 Example Commands
 ===========================
 **Show command usage**
 
-``./tg --help``
+``./bn --help``
 
-``./tg group --help``
+``./bn group --help``
 
-``./tg export --help``
+``./bn export --help``
 
 **Export Excel file**
 
-``./tg export``
+``./bn export``
 
 **Export PNG image**
 
-``./tg export --format png``
+``./bn export --format png``
 
 *Note: Requires the [GraphViz](https://graphviz.gitlab.io) package to be [installed](https://graphviz.gitlab.io/download/#executable-packages) and available on your path.*
 
 **List resources**
 
-``./tg resource list``
+``./bn resource list``
 
 
 **Import Groups, Remote Networks and resources into a new account**
 
-``./tg import -a [new account name] -nrg -f [path to file to import from (format must be as outputted by the export command)]``
+``./bn import -a [new account name] -nrg -f [path to file to import from (format must be as outputted by the export command)]``
 
 Need Help?
 ===========================
